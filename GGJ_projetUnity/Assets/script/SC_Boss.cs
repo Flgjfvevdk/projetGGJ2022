@@ -9,19 +9,18 @@ public class SC_Boss : MonoBehaviour
 
     public GameObject nuageFoudre;
     public int nbNuage;
-    // Start is called before the first frame update
-    void Start()
+
+    GamepadControler controls;
+    void Awake()
     {
-        
+        controls = new GamepadControler();
+
+        controls.ClavierSouris.FoudrePouvoir.performed += ctx => spellFoudre();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            spellFoudre();
-        }
     }
 
     void spellFoudre()
@@ -35,5 +34,15 @@ public class SC_Boss : MonoBehaviour
             nf.GetComponent<SC_NuageFoudre>().lauchStorm();
         }
         
+    }
+
+    private void OnEnable()
+    {
+        controls.ClavierSouris.Enable();
+    }
+
+    private void OnDisable()
+    {
+        controls.ClavierSouris.Disable();
     }
 }
