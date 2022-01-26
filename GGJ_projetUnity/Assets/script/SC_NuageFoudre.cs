@@ -22,7 +22,9 @@ public class SC_NuageFoudre : MonoBehaviour
     public void lauchStorm()
     {
         GameObject fdr = Instantiate(foudre, transform.position, Quaternion.identity);
-        
+        GetComponent<Animator>().SetBool("isStart", true);
+
+
         SC_Foudre fdrScript = fdr.GetComponentInChildren<SC_Foudre>();
         if (fdrScript)
         {

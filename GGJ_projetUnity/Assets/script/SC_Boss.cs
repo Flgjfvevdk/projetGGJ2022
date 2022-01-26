@@ -117,7 +117,7 @@ public class SC_Boss : MonoBehaviour
     {
         float xGauche = bordHautGauche.transform.position.x;
         float xDroit = bordHautDroit.transform.position.x;
-        float yPos = bordHautGauche.transform.position.y;
+        float yPos = bordHautGauche.transform.position.y - 1.5f;
         groupNuage = Instantiate(groupNuagePrefab, Vector3.zero, Quaternion.identity);
         for (int k = 0; k < nbNuage; k++)
         {

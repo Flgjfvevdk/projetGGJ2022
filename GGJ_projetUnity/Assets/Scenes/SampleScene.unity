@@ -206,7 +206,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 319f7bf4ba006bb49a705329eaa56e84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -559,9 +559,6 @@ MonoBehaviour:
   speed: 10
   jumpVelocity: 18
   maxHeight: 0
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 8
   groupNuagePrefab: {fileID: 6710506728322146671, guid: 049e21be8fffc1346a168d5843327851, type: 3}
   tempsDeplacementNuage: 1
 --- !u!212 &869474491
