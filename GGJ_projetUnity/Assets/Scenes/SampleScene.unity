@@ -552,6 +552,9 @@ MonoBehaviour:
   bordHautDroit: {fileID: 634729523}
   nuageFoudre: {fileID: 4896377185948093242, guid: 981a71a330011d044aab84eeea8fa9ad, type: 3}
   nbNuage: 5
+  BdFGO: {fileID: 6966070912860842248, guid: 00de1058b491b824ea8ca1b146f72fee, type: 3}
+  tirRate: 0
+  tirEnCour: 0
   speed: 10
   jumpVelocity: 18
   maxHeight: 0

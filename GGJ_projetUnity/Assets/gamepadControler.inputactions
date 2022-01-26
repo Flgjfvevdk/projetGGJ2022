@@ -186,6 +186,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PositionSouris",
+                    "type": "Value",
+                    "id": "0a4b4a9e-c730-49c1-9d0b-465e7c5c707c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -247,7 +256,7 @@
                 {
                     "name": "",
                     "id": "4683e131-f527-46f0-8f0b-a8eb2f72c405",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -285,6 +294,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "FoudrePouvoir",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "87fbffeb-1761-4cc7-bd0d-0256e841e1ef",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PositionSouris",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

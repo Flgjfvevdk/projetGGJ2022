@@ -208,6 +208,15 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PositionSouris"",
+                    ""type"": ""Value"",
+                    ""id"": ""0a4b4a9e-c730-49c1-9d0b-465e7c5c707c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -269,7 +278,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4683e131-f527-46f0-8f0b-a8eb2f72c405"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -309,6 +318,17 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""action"": ""FoudrePouvoir"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87fbffeb-1761-4cc7-bd0d-0256e841e1ef"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PositionSouris"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -331,6 +351,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         m_ClavierSouris_Jump = m_ClavierSouris.FindAction("Jump", throwIfNotFound: true);
         m_ClavierSouris_FoudrePouvoir = m_ClavierSouris.FindAction("FoudrePouvoir", throwIfNotFound: true);
         m_ClavierSouris_BdFPouvoir = m_ClavierSouris.FindAction("BdFPouvoir", throwIfNotFound: true);
+        m_ClavierSouris_PositionSouris = m_ClavierSouris.FindAction("PositionSouris", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -469,6 +490,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
     private readonly InputAction m_ClavierSouris_Jump;
     private readonly InputAction m_ClavierSouris_FoudrePouvoir;
     private readonly InputAction m_ClavierSouris_BdFPouvoir;
+    private readonly InputAction m_ClavierSouris_PositionSouris;
     public struct ClavierSourisActions
     {
         private @GamepadControler m_Wrapper;
@@ -479,6 +501,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_ClavierSouris_Jump;
         public InputAction @FoudrePouvoir => m_Wrapper.m_ClavierSouris_FoudrePouvoir;
         public InputAction @BdFPouvoir => m_Wrapper.m_ClavierSouris_BdFPouvoir;
+        public InputAction @PositionSouris => m_Wrapper.m_ClavierSouris_PositionSouris;
         public InputActionMap Get() { return m_Wrapper.m_ClavierSouris; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -506,6 +529,9 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @BdFPouvoir.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
                 @BdFPouvoir.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
                 @BdFPouvoir.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
+                @PositionSouris.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnPositionSouris;
+                @PositionSouris.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnPositionSouris;
+                @PositionSouris.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnPositionSouris;
             }
             m_Wrapper.m_ClavierSourisActionsCallbackInterface = instance;
             if (instance != null)
@@ -528,6 +554,9 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @BdFPouvoir.started += instance.OnBdFPouvoir;
                 @BdFPouvoir.performed += instance.OnBdFPouvoir;
                 @BdFPouvoir.canceled += instance.OnBdFPouvoir;
+                @PositionSouris.started += instance.OnPositionSouris;
+                @PositionSouris.performed += instance.OnPositionSouris;
+                @PositionSouris.canceled += instance.OnPositionSouris;
             }
         }
     }
@@ -549,5 +578,6 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnFoudrePouvoir(InputAction.CallbackContext context);
         void OnBdFPouvoir(InputAction.CallbackContext context);
+        void OnPositionSouris(InputAction.CallbackContext context);
     }
 }

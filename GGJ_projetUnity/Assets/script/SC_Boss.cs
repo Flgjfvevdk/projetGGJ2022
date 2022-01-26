@@ -15,6 +15,12 @@ public class SC_Boss : MonoBehaviour
     public GameObject nuageFoudre;
     public int nbNuage;
 
+    //Sort BdF
+    public GameObject BdFGO;
+    public float tirRate;
+    private float tempsAvantProchainTir;
+    public bool tirEnCour;
+
     //Boutons pressés ou non
     private bool qPress;
     private bool sPress;
@@ -89,9 +95,18 @@ public class SC_Boss : MonoBehaviour
         
     }
 
+    // BdF controlable
     void spellBdF()
     {
-
+        if(!tirEnCour)
+        {    
+            GameObject bdf = Instantiate(BdFGO, transform.position, Quaternion.identity);
+            SC_BouleDeFeu scriptBoule = bdf.GetComponent<SC_BouleDeFeu>();
+            if (scriptBoule)
+            {
+                scriptBoule.partirControlable(rb);
+            }
+        }
     }
 
     void spellChargeBas()
