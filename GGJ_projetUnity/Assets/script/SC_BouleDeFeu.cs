@@ -38,16 +38,16 @@ public class SC_BouleDeFeu : MonoBehaviour
             {
                 Vector2 positionSouris = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
                 Vector2 posBdF = transform.position;
-                Vector2 direction = (positionSouris - posBdF).normalized;
+                Vector2 direction = (positionSouris - posBdF);
 
                 
 
-                if(Mathf.Abs(direction.x) < 0.5 && Mathf.Abs(direction.y) < 0.5)
+                if(Mathf.Abs(direction.x) < 0.2 && Mathf.Abs(direction.y) < 0.2)
                 {
                     rb.velocity = Vector2.zero;
                 }
                 else {
-                    rb.velocity = direction * speed * (1f/2f);
+                    rb.velocity = direction.normalized * speed * (1f/2f);
                 }
             }
         }

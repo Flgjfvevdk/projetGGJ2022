@@ -8,11 +8,15 @@ public class SC_Player : MonoBehaviour
     public GameObject bouleGO;
     public GameObject bombeGO;
 
-    private Rigidbody2D rb;
+    //private Rigidbody2D rb; probablement inutile
 
 
     public float tirRate;
     private float tempsAvantProchainTir;
+
+    public float tempsInvicibilite;
+    private float tempsRestantInvincible;
+    private SpriteRenderer spritePl;
 
     //Boutons pressés ou non
     private bool shotRight;
@@ -40,6 +44,9 @@ public class SC_Player : MonoBehaviour
     {
         tempsAvantProchainTir = 0;
         dropBombe = false;
+
+        tempsRestantInvincible = 0.0f;
+        spritePl = GetComponent<SpriteRenderer>();
     }
 
     // Lance les sorts/Objets quand les boutons associers sont pressés
@@ -70,6 +77,22 @@ public class SC_Player : MonoBehaviour
         {
             tempsAvantProchainTir -= Time.deltaTime;
         }
+    
+        if(tempsRestantInvincible >= 0)
+        {
+
+            Color oldColor = spritePl.color;
+            if(oldColor.a == 1)
+            {
+                spritePl.color = new Color(oldColor.r, oldColor.g, oldColor.b, 0.5f);
+            }
+            tempsRestantInvincible -= Time.deltaTime;
+        } else if(spritePl.color.a != 1)
+        {
+            Color oldColor = spritePl.color;
+            spritePl.color = new Color(oldColor.r, oldColor.g, oldColor.b, 1);
+        }
+    
     }
 
     // Fonction bool état des boutons
@@ -96,5 +119,14 @@ public class SC_Player : MonoBehaviour
     private void OnDisable()
     {
         controls.gamecontroler.Disable();
+    }
+
+    public void getHit()
+    {
+        if(tempsRestantInvincible <= 0)
+        {
+            Debug.Log("Outch je suis touché ! ");
+            tempsRestantInvincible = tempsInvicibilite;
+        }
     }
 }

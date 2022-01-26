@@ -32,6 +32,12 @@ public class SC_Boss : MonoBehaviour
     public float jumpVelocity;
     private float defValueGavity;
     public float maxHeight;
+
+    public GameObject groupNuagePrefab;
+    private GameObject groupNuage;
+    public float tempsDeplacementNuage;
+    private float tempsAvantFinDeplNuage;
+
     void Awake()
     {
         controls = new GamepadControler();
@@ -58,14 +64,23 @@ public class SC_Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(qPress)
+        Rigidbody2D rbTarget;
+        if (groupNuage)
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
+            rbTarget = groupNuage.GetComponent<Rigidbody2D>();
+        } else
+        {
+            rbTarget = rb;
+        }
+
+        if (qPress)
+        {
+            rbTarget.velocity = new Vector2(-speed, rbTarget.velocity.y);
         }else if(dPress) {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+            rbTarget.velocity = new Vector2(speed, rbTarget.velocity.y);
         }
         else {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            rbTarget.velocity = new Vector2(0, rbTarget.velocity.y);
         } 
 
         rb.gravityScale = defValueGavity;
@@ -80,6 +95,22 @@ public class SC_Boss : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             }
         }
+
+        if (groupNuage)
+        {
+            if(tempsAvantFinDeplNuage <= 0)
+            {
+                foreach(Transform child in groupNuage.transform)
+                {
+                    child.gameObject.GetComponent<SC_NuageFoudre>().lauchStorm();
+                }
+                groupNuage.transform.DetachChildren();
+                Destroy(groupNuage);
+            } else
+            {
+                tempsAvantFinDeplNuage -= Time.deltaTime;
+            }
+        }
     }
 
     void spellFoudre()
@@ -87,13 +118,18 @@ public class SC_Boss : MonoBehaviour
         float xGauche = bordHautGauche.transform.position.x;
         float xDroit = bordHautDroit.transform.position.x;
         float yPos = bordHautGauche.transform.position.y;
+        groupNuage = Instantiate(groupNuagePrefab, Vector3.zero, Quaternion.identity);
         for (int k = 0; k < nbNuage; k++)
         {
             GameObject nf = Instantiate(nuageFoudre, new Vector2( (k+1) * (xDroit - xGauche) / (nbNuage + 1) + xGauche, yPos), Quaternion.identity);
-            nf.GetComponent<SC_NuageFoudre>().lauchStorm();
+            nf.transform.parent = groupNuage.transform;
+            //nf.GetComponent<SC_NuageFoudre>().lauchStorm();
         }
-        
+        tempsAvantFinDeplNuage = tempsDeplacementNuage;
+
+
     }
+
 
     // BdF controlable
     void spellBdF()
@@ -111,25 +147,34 @@ public class SC_Boss : MonoBehaviour
 
     void spellChargeBas()
     {
+        jumpPressed(false); //Permet de faire en sorte que la charge force le boss a descendre
+
         rb.velocity = new Vector2(rb.velocity.x, -2*jumpVelocity);
+
 
         // Alors j'avait toujours 0 en distance car il se tirer dessus le boss
         // Donc au final j'ai passer le boss dans un layout ou il ignore les raycast donc pas besoins de layer mask
         // Cependant, c'est probablement plus propre avec ...
         // LayerMask mask = LayerMask.GetMask("Surface");   
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down);
-        if (hit.collider != null)
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down);
+        foreach (RaycastHit2D hit in hits)
         {
-            float distance = Mathf.Abs(hit.point.y - transform.position.y);
-            if(distance > 5)
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground") && hit.collider != null)
             {
-                //Dégat / grosse animation
-                Debug.Log("Grosse chute");
-            } else {
-                //Pas de dégats / petit anim ?
-                Debug.Log("Petit chute");
+                float distance = Mathf.Abs(hit.point.y - transform.position.y);
+                if (distance > 5)
+                {
+                    //Dégat / grosse animation
+                    Debug.Log("Grosse chute");
+                }
+                else
+                {
+                    //Pas de dégats / petit anim ?
+                    Debug.Log("Petit chute");
+                }
             }
         }
+
     }
 
     // Fonction bool état des touches
