@@ -156,6 +156,42 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
             ""id"": ""5a2b26ca-04fa-4b02-96ef-f4ab1a32ec3a"",
             ""actions"": [
                 {
+                    ""name"": ""q"",
+                    ""type"": ""Button"",
+                    ""id"": ""9beaf169-0040-4aa9-a070-916d6eae5f34"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""d"",
+                    ""type"": ""Button"",
+                    ""id"": ""de82e57a-f28c-4901-b9a3-aa7115ec5f5a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""s"",
+                    ""type"": ""Button"",
+                    ""id"": ""66f75ab3-7c7f-4474-a794-121271cc794e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9cae774-90d4-4851-b97f-cf6d9c56178f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""FoudrePouvoir"",
                     ""type"": ""Button"",
                     ""id"": ""b1207483-db62-48cc-8208-c574ac31d61a"",
@@ -163,9 +199,106 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BdFPouvoir"",
+                    ""type"": ""Button"",
+                    ""id"": ""08268951-9453-4ec2-a3f2-7d234e8febcf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c69832f1-f30d-42be-93c8-98cdd1212ccb"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db4fac65-5f54-4531-a514-7a571cb58541"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""q"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5046d0d-9c40-4060-a924-72b5d515c44a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""d"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d8366ca-19fe-4ddf-b578-b0e4ff9bf487"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""d"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""02ceed59-14e9-4fd2-98c2-35946bbf122e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4683e131-f527-46f0-8f0b-a8eb2f72c405"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BdFPouvoir"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb3e7be4-1ff3-4ae4-86f3-ccec740a868e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""s"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ba5976e-1c7a-414d-8b8d-edb223dd4117"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""s"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
                 {
                     ""name"": """",
                     ""id"": ""10dff2dd-50fd-4f3a-9b58-e155a6d98714"",
@@ -192,7 +325,12 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         m_gamecontroler_Bombe = m_gamecontroler.FindAction("Bombe", throwIfNotFound: true);
         // ClavierSouris
         m_ClavierSouris = asset.FindActionMap("ClavierSouris", throwIfNotFound: true);
+        m_ClavierSouris_q = m_ClavierSouris.FindAction("q", throwIfNotFound: true);
+        m_ClavierSouris_d = m_ClavierSouris.FindAction("d", throwIfNotFound: true);
+        m_ClavierSouris_s = m_ClavierSouris.FindAction("s", throwIfNotFound: true);
+        m_ClavierSouris_Jump = m_ClavierSouris.FindAction("Jump", throwIfNotFound: true);
         m_ClavierSouris_FoudrePouvoir = m_ClavierSouris.FindAction("FoudrePouvoir", throwIfNotFound: true);
+        m_ClavierSouris_BdFPouvoir = m_ClavierSouris.FindAction("BdFPouvoir", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -325,12 +463,22 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
     // ClavierSouris
     private readonly InputActionMap m_ClavierSouris;
     private IClavierSourisActions m_ClavierSourisActionsCallbackInterface;
+    private readonly InputAction m_ClavierSouris_q;
+    private readonly InputAction m_ClavierSouris_d;
+    private readonly InputAction m_ClavierSouris_s;
+    private readonly InputAction m_ClavierSouris_Jump;
     private readonly InputAction m_ClavierSouris_FoudrePouvoir;
+    private readonly InputAction m_ClavierSouris_BdFPouvoir;
     public struct ClavierSourisActions
     {
         private @GamepadControler m_Wrapper;
         public ClavierSourisActions(@GamepadControler wrapper) { m_Wrapper = wrapper; }
+        public InputAction @q => m_Wrapper.m_ClavierSouris_q;
+        public InputAction @d => m_Wrapper.m_ClavierSouris_d;
+        public InputAction @s => m_Wrapper.m_ClavierSouris_s;
+        public InputAction @Jump => m_Wrapper.m_ClavierSouris_Jump;
         public InputAction @FoudrePouvoir => m_Wrapper.m_ClavierSouris_FoudrePouvoir;
+        public InputAction @BdFPouvoir => m_Wrapper.m_ClavierSouris_BdFPouvoir;
         public InputActionMap Get() { return m_Wrapper.m_ClavierSouris; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -340,16 +488,46 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_ClavierSourisActionsCallbackInterface != null)
             {
+                @q.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnQ;
+                @q.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnQ;
+                @q.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnQ;
+                @d.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnD;
+                @d.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnD;
+                @d.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnD;
+                @s.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnS;
+                @s.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnS;
+                @s.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnS;
+                @Jump.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnJump;
                 @FoudrePouvoir.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnFoudrePouvoir;
                 @FoudrePouvoir.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnFoudrePouvoir;
                 @FoudrePouvoir.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnFoudrePouvoir;
+                @BdFPouvoir.started -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
+                @BdFPouvoir.performed -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
+                @BdFPouvoir.canceled -= m_Wrapper.m_ClavierSourisActionsCallbackInterface.OnBdFPouvoir;
             }
             m_Wrapper.m_ClavierSourisActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @q.started += instance.OnQ;
+                @q.performed += instance.OnQ;
+                @q.canceled += instance.OnQ;
+                @d.started += instance.OnD;
+                @d.performed += instance.OnD;
+                @d.canceled += instance.OnD;
+                @s.started += instance.OnS;
+                @s.performed += instance.OnS;
+                @s.canceled += instance.OnS;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
                 @FoudrePouvoir.started += instance.OnFoudrePouvoir;
                 @FoudrePouvoir.performed += instance.OnFoudrePouvoir;
                 @FoudrePouvoir.canceled += instance.OnFoudrePouvoir;
+                @BdFPouvoir.started += instance.OnBdFPouvoir;
+                @BdFPouvoir.performed += instance.OnBdFPouvoir;
+                @BdFPouvoir.canceled += instance.OnBdFPouvoir;
             }
         }
     }
@@ -365,6 +543,11 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
     }
     public interface IClavierSourisActions
     {
+        void OnQ(InputAction.CallbackContext context);
+        void OnD(InputAction.CallbackContext context);
+        void OnS(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
         void OnFoudrePouvoir(InputAction.CallbackContext context);
+        void OnBdFPouvoir(InputAction.CallbackContext context);
     }
 }
