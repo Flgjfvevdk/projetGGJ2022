@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Surface
   - Boss
+  - Grappin
+  - Bombe
   layers:
   - Default
   - TransparentFX

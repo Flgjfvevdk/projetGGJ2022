@@ -62,6 +62,24 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grappin"",
+                    ""type"": ""Button"",
+                    ""id"": ""980cceae-1fc2-40a4-b972-d18a89b8178f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Bombe"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6a8984d-44e3-4848-94c0-8ccd2390792b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +126,28 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""action"": ""ShootLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9bd805a-6306-4f05-946f-1386ab239479"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grappin"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16babeb3-f3bc-4d5f-b249-8fa42704edea"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bombe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -148,6 +188,8 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         m_gamecontroler_Jump = m_gamecontroler.FindAction("Jump", throwIfNotFound: true);
         m_gamecontroler_ShootRight = m_gamecontroler.FindAction("ShootRight", throwIfNotFound: true);
         m_gamecontroler_ShootLeft = m_gamecontroler.FindAction("ShootLeft", throwIfNotFound: true);
+        m_gamecontroler_Grappin = m_gamecontroler.FindAction("Grappin", throwIfNotFound: true);
+        m_gamecontroler_Bombe = m_gamecontroler.FindAction("Bombe", throwIfNotFound: true);
         // ClavierSouris
         m_ClavierSouris = asset.FindActionMap("ClavierSouris", throwIfNotFound: true);
         m_ClavierSouris_FoudrePouvoir = m_ClavierSouris.FindAction("FoudrePouvoir", throwIfNotFound: true);
@@ -214,6 +256,8 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
     private readonly InputAction m_gamecontroler_Jump;
     private readonly InputAction m_gamecontroler_ShootRight;
     private readonly InputAction m_gamecontroler_ShootLeft;
+    private readonly InputAction m_gamecontroler_Grappin;
+    private readonly InputAction m_gamecontroler_Bombe;
     public struct GamecontrolerActions
     {
         private @GamepadControler m_Wrapper;
@@ -222,6 +266,8 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_gamecontroler_Jump;
         public InputAction @ShootRight => m_Wrapper.m_gamecontroler_ShootRight;
         public InputAction @ShootLeft => m_Wrapper.m_gamecontroler_ShootLeft;
+        public InputAction @Grappin => m_Wrapper.m_gamecontroler_Grappin;
+        public InputAction @Bombe => m_Wrapper.m_gamecontroler_Bombe;
         public InputActionMap Get() { return m_Wrapper.m_gamecontroler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -243,6 +289,12 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @ShootLeft.started -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnShootLeft;
                 @ShootLeft.performed -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnShootLeft;
                 @ShootLeft.canceled -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnShootLeft;
+                @Grappin.started -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnGrappin;
+                @Grappin.performed -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnGrappin;
+                @Grappin.canceled -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnGrappin;
+                @Bombe.started -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBombe;
+                @Bombe.performed -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBombe;
+                @Bombe.canceled -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBombe;
             }
             m_Wrapper.m_GamecontrolerActionsCallbackInterface = instance;
             if (instance != null)
@@ -259,6 +311,12 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @ShootLeft.started += instance.OnShootLeft;
                 @ShootLeft.performed += instance.OnShootLeft;
                 @ShootLeft.canceled += instance.OnShootLeft;
+                @Grappin.started += instance.OnGrappin;
+                @Grappin.performed += instance.OnGrappin;
+                @Grappin.canceled += instance.OnGrappin;
+                @Bombe.started += instance.OnBombe;
+                @Bombe.performed += instance.OnBombe;
+                @Bombe.canceled += instance.OnBombe;
             }
         }
     }
@@ -302,6 +360,8 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnShootRight(InputAction.CallbackContext context);
         void OnShootLeft(InputAction.CallbackContext context);
+        void OnGrappin(InputAction.CallbackContext context);
+        void OnBombe(InputAction.CallbackContext context);
     }
     public interface IClavierSourisActions
     {

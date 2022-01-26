@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SC_Player : MonoBehaviour
 {
+    GamepadControler controls;
     public GameObject bouleGO;
+    public GameObject bombeGO;
 
     private Rigidbody2D rb;
 
@@ -12,12 +14,13 @@ public class SC_Player : MonoBehaviour
     public float tirRate;
     private float tempsAvantProchainTir;
 
+    //Boutons pressés ou non
     private bool shotRight;
     private bool shotLeft;
-    //private bool tirDroite;
+    private bool dropBombe;
 
-    GamepadControler controls;
-
+    
+    // Créeation des controles 
     void Awake()
     {
         controls = new GamepadControler();
@@ -27,25 +30,21 @@ public class SC_Player : MonoBehaviour
 
         controls.gamecontroler.ShootLeft.performed += ctx => shotPressLeft(true);
         controls.gamecontroler.ShootLeft.canceled += ctx => shotPressLeft(false);
+
+        controls.gamecontroler.Bombe.performed += ctx => bombepressed(true);
+        controls.gamecontroler.Bombe.canceled += ctx => bombepressed(false);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        //tirDroite = true;
-        //rb = GetComponent<Rigidbody2D>();
         tempsAvantProchainTir = 0;
+        dropBombe = false;
     }
 
-    // Update is called once per frame
+    // Lance les sorts/Objets quand les boutons associers sont pressés
     void Update()
     {
-        //if(rb.velocity.x != 0)
-        //{
-        //    tirDroite = rb.velocity.x > 0;
-        //}
-
-        //if (Input.GetButton("Fire1") && tempsAvantProchainTir <= 0)
         if ((shotRight|| shotLeft) && tempsAvantProchainTir <= 0)
         {
             
@@ -62,7 +61,9 @@ public class SC_Player : MonoBehaviour
                 }
             }
             tempsAvantProchainTir = tirRate;
-
+        } else if (dropBombe && tempsAvantProchainTir <= 0) {
+            GameObject bombe = Instantiate(bombeGO,transform.position, Quaternion.identity);
+            tempsAvantProchainTir = tirRate;
         }
 
         if(tempsAvantProchainTir >= 0)
@@ -71,7 +72,7 @@ public class SC_Player : MonoBehaviour
         }
     }
 
-
+    // Fonction bool état des boutons
     void shotPressRight(bool b)
     {
         shotRight = b;
@@ -80,6 +81,11 @@ public class SC_Player : MonoBehaviour
     void shotPressLeft(bool b)
     {
         shotLeft = b;
+    }
+
+    void bombepressed(bool b)
+    {
+        dropBombe = b;
     }
 
     private void OnEnable()

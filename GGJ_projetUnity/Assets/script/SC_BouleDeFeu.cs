@@ -28,6 +28,7 @@ public class SC_BouleDeFeu : MonoBehaviour
         }
     }
 
+    // Cast des boules de feux
     public void partir(Vector2 vect)
     {
         rb.velocity = speed * vect ;
@@ -37,9 +38,14 @@ public class SC_BouleDeFeu : MonoBehaviour
     {
         if (collision.CompareTag("Boss"))
         {
-            //On lui fait des dégâts !
+            //On lui fait des dï¿½gï¿½ts !
         } else if (collision.CompareTag("Surface"))
         {
+            Destroy(gameObject);
+        } else if (collision.CompareTag("Bombe"))
+        {
+            //On dÃ©truit les bombes si on tire dessus
+            collision.gameObject.GetComponent<SC_Bombe>().Exploser();
             Destroy(gameObject);
         }
     }
