@@ -20,7 +20,7 @@ public class SC_Mouvement : MonoBehaviour
     [SerializeField] private GameObject hook;
     public bool grapInstancier;
     public bool grapAccroche;
-    private bool facingRight;
+    public bool facingRight;
 
     //Mouvement
     private Vector2 move;
@@ -61,6 +61,15 @@ public class SC_Mouvement : MonoBehaviour
         } else {
             nbSaut = Mathf.Min(nbSaut, 1);
         }
+
+        //Orientation Player
+        if(facingRight && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector2(- transform.localScale.x, transform.localScale.y);
+        } else if (!facingRight && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector2(- transform.localScale.x, transform.localScale.y);
+        }
        
         //Mouvement Player
         if(!grapAccroche)
@@ -80,7 +89,7 @@ public class SC_Mouvement : MonoBehaviour
             rb.gravityScale = 0;
             nbSaut = 1;
             Vector2 distancePlafond = grap.transform.position - transform.position;
-            if (Mathf.Pow(distancePlafond.x,2) + Mathf.Pow(distancePlafond.y,2) <= 1f)
+            if (Mathf.Pow(distancePlafond.x,2) + Mathf.Pow(distancePlafond.y,2) <= 1.5f)
             {
                 rb.velocity = Vector2.zero;
             }

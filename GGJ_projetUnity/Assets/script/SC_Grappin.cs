@@ -11,7 +11,7 @@ public class SC_Grappin : MonoBehaviour
     private Rigidbody2D rb;
     private LineRenderer line;
     
-
+    private bool needTirerPlayer;
     public float speed;
     private float tempsDeVie;
 
@@ -21,6 +21,8 @@ public class SC_Grappin : MonoBehaviour
         line = GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody2D>();
         tempsDeVie = 1.0f;
+        needTirerPlayer = false;
+        // line.sortingLayerName = "Foreground";
     }
 
     //Met les bon paramètres pour le grappin
@@ -45,6 +47,11 @@ public class SC_Grappin : MonoBehaviour
             tempsDeVie -= Time.deltaTime;
             line.SetPosition(0, playerTransform.position);
             line.SetPosition(1, transform.position);
+            
+            if(playerTransform.gameObject.GetComponent<SC_Mouvement>().grapAccroche == true)
+            {
+                tempsDeVie = 1.0f;
+            }
         }
         else if (playerTransform.gameObject.GetComponent<SC_Mouvement>().grapAccroche == false) 
         {
@@ -52,19 +59,35 @@ public class SC_Grappin : MonoBehaviour
             playerTransform.gameObject.GetComponent<SC_Mouvement>().grapInstancier = false;
             Destroy(this.gameObject);
         }
+
+        if(needTirerPlayer)
+        {
+            tirerPlayer();
+        }
         
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // On s'acroche et tire le joueur si on touche une surface
-        if (collision.CompareTag("Surface"))
+        if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
         {
-            rb.velocity = Vector2.zero;
-            playerTransform.gameObject.GetComponent<SC_Mouvement>().grapAccroche = true;
+            needTirerPlayer = true;
+        }
+    }
 
-            playerRb = playerTransform.gameObject.GetComponent<Rigidbody2D>();
-            Vector2 direction = (playerTransform.position - transform.position);
+    private void tirerPlayer()
+    {
+        rb.velocity = Vector2.zero;
+        playerTransform.gameObject.GetComponent<SC_Mouvement>().grapAccroche = true;
+
+        playerRb = playerTransform.gameObject.GetComponent<Rigidbody2D>();
+        Vector2 direction = (playerTransform.position - transform.position);
+        if(Mathf.Pow(direction.x,2) < 0.3f || Mathf.Pow(direction.y,2) < 0.3f)
+        {
+            playerRb.velocity = Vector2.zero;
+        } else {
             playerRb.velocity = - direction.normalized * speed;
         }
+        
     }
 }

@@ -8,6 +8,7 @@ public class SC_Boss : MonoBehaviour
 
     //Boss
     private Rigidbody2D rb;
+    private bool bossFacingRight;
    
     //Sort foudre
     public Transform bordHautGauche;
@@ -20,6 +21,9 @@ public class SC_Boss : MonoBehaviour
     public float tirRate;
     private float tempsAvantProchainTir;
     public bool tirEnCour;
+
+    //Sort Cac
+    public float hitboxSize;
 
     //Boutons pressés ou non
     private bool qPress;
@@ -52,6 +56,7 @@ public class SC_Boss : MonoBehaviour
 
         controls.ClavierSouris.BdFPouvoir.performed += ctx => spellBdF();
         controls.ClavierSouris.FoudrePouvoir.performed += ctx => spellFoudre();
+        controls.ClavierSouris.CacPouvoir.performed += ctx => spellCac();
         controls.ClavierSouris.s.performed += ctx => spellChargeBas();
     }
 
@@ -59,11 +64,13 @@ public class SC_Boss : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         defValueGavity = rb.gravityScale;
+        bossFacingRight = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Deplacement nuages
         Rigidbody2D rbTarget;
         if (groupNuage)
         {
@@ -73,20 +80,25 @@ public class SC_Boss : MonoBehaviour
             rbTarget = rb;
         }
 
+        //Deplacement boss
         if (qPress)
         {
             rbTarget.velocity = new Vector2(-speed, rbTarget.velocity.y);
+            bossFacingRight = false;
         }else if(dPress) {
             rbTarget.velocity = new Vector2(speed, rbTarget.velocity.y);
+            bossFacingRight = true;
         }
         else {
             rbTarget.velocity = new Vector2(0, rbTarget.velocity.y);
         } 
 
+        // Levitation boss
         rb.gravityScale = defValueGavity;
-        if(jumpPress && transform.position.y < maxHeight){
+        float dist = distToSol();
+        if(jumpPress && dist < maxHeight){
             
-            if(transform.position.y > (maxHeight - 1))
+            if(dist > (maxHeight - 1))
             {
                 rb.gravityScale = 0;
                 rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -96,6 +108,7 @@ public class SC_Boss : MonoBehaviour
             }
         }
 
+        //Foudre
         if (groupNuage)
         {
             if(tempsAvantFinDeplNuage <= 0)
@@ -151,30 +164,57 @@ public class SC_Boss : MonoBehaviour
 
         rb.velocity = new Vector2(rb.velocity.x, -2*jumpVelocity);
 
-
-        // Alors j'avait toujours 0 en distance car il se tirer dessus le boss
-        // Donc au final j'ai passer le boss dans un layout ou il ignore les raycast donc pas besoins de layer mask
-        // Cependant, c'est probablement plus propre avec ...
-        // LayerMask mask = LayerMask.GetMask("Surface");   
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down);
-        foreach (RaycastHit2D hit in hits)
+        float distance = distToSol();
+        if (distance > 5)
         {
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Ground") && hit.collider != null)
+            //Dégat / grosse animation
+            Debug.Log("Grosse chute");
+        }
+        else
+        {
+            //Pas de dégats / petit anim ?
+            Debug.Log("Petit chute");
+        }
+    }
+
+    void spellCac()
+    {
+        Collider2D[] colliders;
+        if(bossFacingRight)
+        {
+            colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2) , 0f);
+        } else {
+            colliders = Physics2D.OverlapBoxAll(transform.position - new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(-hitboxSize,2), 0f);
+        }
+        
+        GameObject playerGO = null;
+        foreach(Collider2D c in colliders)
+        {
+            if (c.gameObject.CompareTag("Player"))
             {
-                float distance = Mathf.Abs(hit.point.y - transform.position.y);
-                if (distance > 5)
-                {
-                    //Dégat / grosse animation
-                    Debug.Log("Grosse chute");
-                }
-                else
-                {
-                    //Pas de dégats / petit anim ?
-                    Debug.Log("Petit chute");
-                }
+                playerGO = c.gameObject;
             }
         }
 
+        if (playerGO)
+        {
+            Debug.Log("J'ai touché le Player");
+            //Faire des degats au Player;
+        }
+    }
+
+    private float distToSol(){
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down);
+        foreach (RaycastHit2D hit in hits)
+        {
+            LayerMask hitlayer = hit.transform.gameObject.layer;
+            if ((hitlayer == LayerMask.NameToLayer("Ground") || hitlayer == LayerMask.NameToLayer("Plateforme")) && hit.collider != null)
+            {
+                float distance = Mathf.Abs(hit.point.y - transform.position.y);
+                return distance;
+            }
+        }
+        return Mathf.Infinity;
     }
 
     // Fonction bool état des touches
@@ -200,4 +240,11 @@ public class SC_Boss : MonoBehaviour
     {
         controls.ClavierSouris.Disable();
     }
+
+    // void OnDrawGizmos()
+    // {
+    //     // Draw a red cricle autour de la bombre
+    //     UnityEditor.Handles.color = Color.red;
+    //     UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(hitboxSize/2, 0, 0), new Vector3(hitboxSize,2,0));
+    // }
 }

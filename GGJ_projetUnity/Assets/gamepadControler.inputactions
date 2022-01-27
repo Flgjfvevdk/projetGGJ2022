@@ -188,13 +188,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PositionSouris",
-                    "type": "Value",
-                    "id": "0a4b4a9e-c730-49c1-9d0b-465e7c5c707c",
-                    "expectedControlType": "Vector2",
+                    "name": "CacPouvoir",
+                    "type": "Button",
+                    "id": "36e4aec0-1b98-4288-9ad0-7e5f5e5b8365",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -256,7 +256,7 @@
                 {
                     "name": "",
                     "id": "4683e131-f527-46f0-8f0b-a8eb2f72c405",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -299,12 +299,12 @@
                 },
                 {
                     "name": "",
-                    "id": "87fbffeb-1761-4cc7-bd0d-0256e841e1ef",
-                    "path": "<Mouse>/position",
+                    "id": "1c1f4595-999b-4bb7-b417-6ee7dc392bce",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PositionSouris",
+                    "action": "CacPouvoir",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

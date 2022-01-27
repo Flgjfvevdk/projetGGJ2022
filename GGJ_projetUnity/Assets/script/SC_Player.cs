@@ -10,7 +10,7 @@ public class SC_Player : MonoBehaviour
 
     //private Rigidbody2D rb; probablement inutile
 
-
+    public Transform livrePosition;
     public float tirRate;
     private float tempsAvantProchainTir;
 
@@ -55,16 +55,18 @@ public class SC_Player : MonoBehaviour
         if ((shotRight|| shotLeft) && tempsAvantProchainTir <= 0)
         {
             
-            GameObject bouleTir = Instantiate(bouleGO, transform.position, Quaternion.identity);
+            GameObject bouleTir = Instantiate(bouleGO, livrePosition.position, Quaternion.identity);
             SC_BouleDeFeu scriptBoule = bouleTir.GetComponent<SC_BouleDeFeu>();
             if (scriptBoule)
             {
                 if (shotRight)
                 {
                     scriptBoule.partir(Vector2.right);
+                    GetComponent<SC_Mouvement>().facingRight = true;
                 } else
                 {
                     scriptBoule.partir(Vector2.left);
+                    GetComponent<SC_Mouvement>().facingRight = false;
                 }
             }
             tempsAvantProchainTir = tirRate;

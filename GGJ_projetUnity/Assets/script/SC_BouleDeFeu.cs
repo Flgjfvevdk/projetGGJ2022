@@ -47,7 +47,7 @@ public class SC_BouleDeFeu : MonoBehaviour
                     rb.velocity = Vector2.zero;
                 }
                 else {
-                    rb.velocity = direction.normalized * speed * (1f/2f);
+                    rb.velocity = direction.normalized * speed * (6f/8f);
                 }
             }
         }
@@ -82,7 +82,7 @@ public class SC_BouleDeFeu : MonoBehaviour
         if (collision.CompareTag("Boss"))
         {
             //On lui fait des d�g�ts !
-        } else if (collision.CompareTag("Surface"))
+        } else if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
         {
             Destroy(gameObject);
         } else if (collision.CompareTag("Bombe"))
