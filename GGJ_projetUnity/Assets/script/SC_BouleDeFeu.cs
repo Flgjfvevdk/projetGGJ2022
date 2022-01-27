@@ -47,7 +47,7 @@ public class SC_BouleDeFeu : MonoBehaviour
                     rb.velocity = Vector2.zero;
                 }
                 else {
-                    rb.velocity = direction.normalized * speed * (6f/8f);
+                    rb.velocity = direction.normalized * speed * (4f/8f);
                 }
             }
         }

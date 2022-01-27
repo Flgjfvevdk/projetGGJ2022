@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SC_Player : MonoBehaviour
 {
@@ -204,6 +205,7 @@ public class SC_Player : MonoBehaviour
         if(hpPlayer <= 0)
         {
             Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
+            SceneManager.LoadScene("VictoirePlayer");
         }
     }
 

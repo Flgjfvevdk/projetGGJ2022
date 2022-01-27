@@ -41,6 +41,7 @@ public class SC_Mouvement : MonoBehaviour
     private float timerRechargeBlink;
     public float distanceBlink;
     public Transform bordPjDevant;
+    private Vector2 tpBlickVect;
     
     
     void Awake()
@@ -55,6 +56,9 @@ public class SC_Mouvement : MonoBehaviour
         controls.gamecontroler.Grappin.performed += ctx => grappin();
 
         controls.gamecontroler.Blink.performed += ctx => blink();
+
+        controls.gamecontroler.BlinkStick.performed += ctx => tpBlickVect = ctx.ReadValue<Vector2>();
+
     }
 
 
@@ -184,6 +188,34 @@ public class SC_Mouvement : MonoBehaviour
             gameObject.GetComponent<SC_Player>().resetInvicibility(2); //(le 2 indique que le temps d'invincibilité va être 2 fois plus long que le temps normal
         }
         
+    }
+
+    private void blinkStick(){
+
+        // if (timerRechargeBlink <= 0 && !grapAccroche)
+        // {
+        //     timerRechargeBlink = tempsRechargementBlink;
+        //     sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
+
+        //     Vector3 direction = tpBlickVect.normalized;
+            
+
+        //     RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, distanceBlink);
+        //     float distMax = distanceBlink;
+        //     foreach(RaycastHit2D hit in hits)
+        //     {
+        //         LayerMask hitlayer = hit.transform.gameObject.layer;
+        //         if ((hitlayer == LayerMask.NameToLayer("Ground") || hitlayer == LayerMask.NameToLayer("Plateforme")) && hit.collider != null)
+        //         {
+        //             distMax = Mathf.Min(distMax, Mathf.Abs(hit.point.x - bordPjDevant.position.x));
+        //         }
+        //     }
+
+        //     transform.position = transform.position + direction * distMax;
+
+        //     //Le player devient invincible pdt son temps d'invincibilité
+        //     gameObject.GetComponent<SC_Player>().resetInvicibility(2); //(le 2 indique que le temps d'invincibilité va être 2 fois plus long que le temps normal
+        // }
     }
 
     private void OnEnable()
