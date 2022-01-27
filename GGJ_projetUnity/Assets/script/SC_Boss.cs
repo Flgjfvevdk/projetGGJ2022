@@ -36,11 +36,20 @@ public class SC_Boss : MonoBehaviour
     public float jumpVelocity;
     private float defValueGavity;
     public float maxHeight;
+    private Animator anim;
 
     public GameObject groupNuagePrefab;
     private GameObject groupNuage;
     public float tempsDeplacementNuage;
     private float tempsAvantFinDeplNuage;
+    public SpriteRenderer elecSprite;
+
+    public SpriteRenderer mainGaucheRougeSprite;
+    public Transform boutMainGauche;
+    public GameObject mainGaucheGO;
+    private bool attCacCharge;
+    public float delaieAttCac;
+    private float timeBfrAttCac;
 
     void Awake()
     {
@@ -56,7 +65,7 @@ public class SC_Boss : MonoBehaviour
 
         controls.ClavierSouris.BdFPouvoir.performed += ctx => spellBdF();
         controls.ClavierSouris.FoudrePouvoir.performed += ctx => spellFoudre();
-        controls.ClavierSouris.CacPouvoir.performed += ctx => spellCac();
+        controls.ClavierSouris.CacPouvoir.performed += ctx => chargeSpellCac();
         controls.ClavierSouris.s.performed += ctx => spellChargeBas();
     }
 
@@ -65,6 +74,8 @@ public class SC_Boss : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         defValueGavity = rb.gravityScale;
         bossFacingRight = false;
+        anim = GetComponent<Animator>();
+        attCacCharge = false;
     }
 
     // Update is called once per frame
@@ -85,9 +96,12 @@ public class SC_Boss : MonoBehaviour
         {
             rbTarget.velocity = new Vector2(-speed, rbTarget.velocity.y);
             bossFacingRight = false;
-        }else if(dPress) {
+            bossMajDirection();
+        }
+        else if(dPress) {
             rbTarget.velocity = new Vector2(speed, rbTarget.velocity.y);
             bossFacingRight = true;
+            bossMajDirection();
         }
         else {
             rbTarget.velocity = new Vector2(0, rbTarget.velocity.y);
@@ -119,11 +133,28 @@ public class SC_Boss : MonoBehaviour
                 }
                 groupNuage.transform.DetachChildren();
                 Destroy(groupNuage);
+                elecSprite.enabled = false;
             } else
             {
                 tempsAvantFinDeplNuage -= Time.deltaTime;
             }
         }
+
+        if (attCacCharge) 
+        { 
+            if(timeBfrAttCac <= 0)
+            {
+                spellCac();
+                attCacCharge = false;
+                mainGaucheRougeSprite.color = new Color(1, 1, 1, 0);
+            } else
+            {
+                mainGaucheRougeSprite.color = new Color(1,1,1, Mathf.Min( (2.0f*(delaieAttCac - timeBfrAttCac) / delaieAttCac), 1.0f));
+                //mainGaucheRougeSprite.color = Color.white;
+                timeBfrAttCac -= Time.deltaTime;
+            }
+        }
+    
     }
 
     void spellFoudre()
@@ -132,6 +163,8 @@ public class SC_Boss : MonoBehaviour
         float xDroit = bordHautDroit.transform.position.x;
         float yPos = bordHautGauche.transform.position.y - 1.5f;
         groupNuage = Instantiate(groupNuagePrefab, Vector3.zero, Quaternion.identity);
+        rb.velocity = Vector2.zero;
+        elecSprite.enabled = true;
         for (int k = 0; k < nbNuage; k++)
         {
             GameObject nf = Instantiate(nuageFoudre, new Vector2( (k+1) * (xDroit - xGauche) / (nbNuage + 1) + xGauche, yPos), Quaternion.identity);
@@ -165,10 +198,11 @@ public class SC_Boss : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, -2*jumpVelocity);
 
         float distance = distToSol();
-        if (distance > 5)
+        if (distance > 6)
         {
             //Dégat / grosse animation
             Debug.Log("Grosse chute");
+            anim.SetBool("SmashBas", true);
         }
         else
         {
@@ -177,19 +211,28 @@ public class SC_Boss : MonoBehaviour
         }
     }
 
+    void chargeSpellCac()
+    {
+        attCacCharge = true;
+        timeBfrAttCac = delaieAttCac;
+    }
+
     void spellCac()
     {
         Collider2D[] colliders;
-        if(bossFacingRight)
+        if (bossFacingRight)
         {
             colliders = Physics2D.OverlapBoxAll(transform.position + new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2) , 0f);
+            mainGaucheGO.GetComponent<SC_BossMainGauche>().dash(transform.position + new Vector3(hitboxSize + boutMainGauche.localPosition.x, 0, 0) );
         } else {
-            colliders = Physics2D.OverlapBoxAll(transform.position - new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(-hitboxSize,2), 0f);
+            colliders = Physics2D.OverlapBoxAll(transform.position - new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2), 0f);
+            mainGaucheGO.GetComponent<SC_BossMainGauche>().dash(transform.position - new Vector3(hitboxSize + boutMainGauche.localPosition.x, 0, 0));
         }
         
         GameObject playerGO = null;
         foreach(Collider2D c in colliders)
         {
+            //Debug.Log(c.name);
             if (c.gameObject.CompareTag("Player"))
             {
                 playerGO = c.gameObject;
@@ -201,6 +244,19 @@ public class SC_Boss : MonoBehaviour
             Debug.Log("J'ai touché le Player");
             //Faire des degats au Player;
         }
+    }
+
+
+    void bossMajDirection()
+    {
+        if (bossFacingRight)
+        {
+            transform.localScale = new Vector2(- Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        } else
+        {
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        }
+        
     }
 
     private float distToSol(){
@@ -241,10 +297,20 @@ public class SC_Boss : MonoBehaviour
         controls.ClavierSouris.Disable();
     }
 
-    // void OnDrawGizmos()
-    // {
-    //     // Draw a red cricle autour de la bombre
-    //     UnityEditor.Handles.color = Color.red;
-    //     UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(hitboxSize/2, 0, 0), new Vector3(hitboxSize,2,0));
-    // }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Surface") || collision.gameObject.CompareTag("Plateforme"))
+        {
+            anim.SetBool("SmashBas", false);
+        }
+    }
+
+
+
+    void OnDrawGizmos()
+    {
+        // Draw a red cricle autour de la bombre
+        UnityEditor.Handles.color = Color.red;
+        UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(-hitboxSize / 2, 0, 0), new Vector3(hitboxSize, 2, 0));
+    }
 }
