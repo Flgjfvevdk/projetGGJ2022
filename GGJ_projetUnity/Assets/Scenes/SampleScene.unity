@@ -775,7 +775,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 5
@@ -874,6 +874,8 @@ MonoBehaviour:
   tempsInvicibilite: 0.5
   sliderBombe: {fileID: 1091450801}
   delaieRechargeBombe: 0.8
+  bombeAngleDegre: -100
+  vitesseInit: 12
 --- !u!95 &361373311
 Animator:
   serializedVersion: 3
@@ -2074,7 +2076,7 @@ MonoBehaviour:
   jumpVelocity: 15
   maxHeight: 8
   groupNuagePrefab: {fileID: 6710506728322146671, guid: 049e21be8fffc1346a168d5843327851, type: 3}
-  tempsRechargeFoudre: 4
+  tempsRechargeFoudre: 6
   tempsDeplacementNuage: 0.8
   elecSprite: {fileID: 1071756830}
   sliderFoudre: {fileID: 1123690528}

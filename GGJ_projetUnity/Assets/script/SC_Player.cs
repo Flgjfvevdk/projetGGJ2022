@@ -25,6 +25,8 @@ public class SC_Player : MonoBehaviour
     public SC_Slider_Float sliderBombe;
     public float delaieRechargeBombe;
     private float timerRechargeBombe;
+    public float bombeAngleDegre;
+    public float vitesseInit;
 
     //Boutons pressés ou non
     private bool shotRight;
@@ -115,6 +117,12 @@ public class SC_Player : MonoBehaviour
         
         if (dropBombe && timerRechargeBombe <= 0) {
             GameObject bombe = Instantiate(bombeGO,transform.position, Quaternion.identity);
+            int dir = 1;
+            if (!GetComponent<SC_Mouvement>().facingRight)
+            {
+                dir = -1;
+            }
+            bombe.GetComponent<Rigidbody2D>().velocity = vitesseInit * new Vector2(dir * Mathf.Cos(bombeAngleDegre), Mathf.Sin(bombeAngleDegre));
             timerRechargeBombe = delaieRechargeBombe;
         }
 
