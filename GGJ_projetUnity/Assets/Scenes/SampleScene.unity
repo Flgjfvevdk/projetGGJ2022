@@ -858,6 +858,7 @@ MonoBehaviour:
   BdFGO: {fileID: 6966070912860842248, guid: 00de1058b491b824ea8ca1b146f72fee, type: 3}
   tirRate: 0
   tirEnCour: 0
+  hitboxSize: 6
   speed: 10
   jumpVelocity: 18
   maxHeight: 10
