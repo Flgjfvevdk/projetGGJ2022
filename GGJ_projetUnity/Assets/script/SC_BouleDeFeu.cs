@@ -15,6 +15,7 @@ public class SC_BouleDeFeu : MonoBehaviour
     private Rigidbody2D rb;
     public float speed;
     private float tempsDeVie;
+    public float tempsDeVieControlable;
 
     // Start is called before the first frame update
     void Awake()
@@ -73,7 +74,8 @@ public class SC_BouleDeFeu : MonoBehaviour
     {
         this.bossRb = plRb;
         isControlable = true;
-        transform.localScale = transform.localScale * 2.5f; 
+        transform.localScale = transform.localScale * 2.5f;
+        tempsDeVie = tempsDeVieControlable;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

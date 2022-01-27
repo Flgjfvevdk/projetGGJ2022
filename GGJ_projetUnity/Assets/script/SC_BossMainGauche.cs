@@ -41,6 +41,7 @@ public class SC_BossMainGauche : MonoBehaviour
                 {
                     transform.position = transform.parent.position;
                     tempsAvantFin = tempsDash;
+                    transform.parent.gameObject.GetComponent<SC_Boss>().cacDispo = true;
                 }
                 else
                 {

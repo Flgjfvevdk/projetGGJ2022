@@ -54,6 +54,7 @@ public class SC_Boss : MonoBehaviour
     public float tempsDeplacementNuage;
     private float tempsAvantFinDeplNuage;
     public SpriteRenderer elecSprite;
+    public GameObject sliderFoudre;
 
     public SpriteRenderer mainGaucheRougeSprite;
     public Transform boutMainGauche;
@@ -61,6 +62,8 @@ public class SC_Boss : MonoBehaviour
     private bool attCacCharge;
     public float delaieAttCac;
     private float timeBfrAttCac;
+    [System.NonSerialized]
+    public bool cacDispo;
 
     void Awake()
     {
@@ -87,12 +90,19 @@ public class SC_Boss : MonoBehaviour
         bossFacingRight = false;
         anim = GetComponent<Animator>();
         attCacCharge = false;
+        cacDispo = true;
+
+
         hpBoss = hpBossMax;
         sliderBoss.init(hpBossMax);
         sliderBoss.setValue(hpBoss);
-        // Debug.Log(sliderBoss.);
+
         chargeBasEnCour = false;
+
         cooldownFoudre = 0.0f;
+        sliderFoudre.GetComponent<SC_Slider_Float>().init(tempsRechargeFoudre);
+        sliderFoudre.GetComponent<SC_Slider_Float>().setValue(tempsRechargeFoudre - cooldownFoudre);
+
     }
 
     // Update is called once per frame
@@ -168,7 +178,6 @@ public class SC_Boss : MonoBehaviour
             } else
             {
                 mainGaucheRougeSprite.color = new Color(1,1,1, Mathf.Min( (2.0f*(delaieAttCac - timeBfrAttCac) / delaieAttCac), 1.0f));
-                //mainGaucheRougeSprite.color = Color.white;
                 timeBfrAttCac -= Time.deltaTime;
             }
         }
@@ -179,8 +188,10 @@ public class SC_Boss : MonoBehaviour
         //Cooldown de la foudre
         if(cooldownFoudre >= 0)
         {
+            sliderFoudre.GetComponent<SC_Slider_Float>().setValue((tempsRechargeFoudre - cooldownFoudre));
             cooldownFoudre -= Time.deltaTime;
-        }
+        } 
+
     
     }
 
@@ -242,8 +253,13 @@ public class SC_Boss : MonoBehaviour
 
     void chargeSpellCac()
     {
-        attCacCharge = true;
-        timeBfrAttCac = delaieAttCac;
+        if (cacDispo)
+        {
+            attCacCharge = true;
+            timeBfrAttCac = delaieAttCac;
+            cacDispo = false;
+        }
+        
     }
 
     void spellCac()

@@ -22,6 +22,10 @@ public class SC_Player : MonoBehaviour
     private float tempsRestantInvincible;
     private SpriteRenderer spritePl;
 
+    public SC_Slider_Float sliderBombe;
+    public float delaieRechargeBombe;
+    private float timerRechargeBombe;
+
     //Boutons pressés ou non
     private bool shotRight;
     private bool shotLeft;
@@ -50,7 +54,12 @@ public class SC_Player : MonoBehaviour
     void Start()
     {
         tempsAvantProchainTir = 0;
+
         dropBombe = false;
+        timerRechargeBombe = 0.0f;
+        sliderBombe.init(delaieRechargeBombe);
+        sliderBombe.setValue(delaieRechargeBombe - timerRechargeBombe);
+
         hpPlayer = hpPlayerMax;
         sliderPlayer.GetComponent<SC_Slider>().init(hpPlayerMax);
         sliderPlayer.GetComponent<SC_Slider>().setValue(hpPlayer);
@@ -58,6 +67,7 @@ public class SC_Player : MonoBehaviour
         spritePl = GetComponent<SpriteRenderer>();
 
         tempsAvantResetDirection = 0.0f;
+
     }
 
     // Lance les sorts/Objets quand les boutons associers sont pressés
@@ -103,14 +113,19 @@ public class SC_Player : MonoBehaviour
         }
 
         
-        if (dropBombe && tempsAvantProchainTir <= 0) {
+        if (dropBombe && timerRechargeBombe <= 0) {
             GameObject bombe = Instantiate(bombeGO,transform.position, Quaternion.identity);
-            tempsAvantProchainTir = tirRate;
+            timerRechargeBombe = delaieRechargeBombe;
         }
 
         if(tempsAvantProchainTir >= 0)
         {
             tempsAvantProchainTir -= Time.deltaTime;
+        }
+        if(timerRechargeBombe >= 0)
+        {
+            timerRechargeBombe -= Time.deltaTime;
+            sliderBombe.setValue(delaieRechargeBombe - timerRechargeBombe);
         }
     
         if(tempsRestantInvincible >= 0)
