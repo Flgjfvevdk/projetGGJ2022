@@ -20,7 +20,13 @@ public class SC_Mouvement : MonoBehaviour
     [SerializeField] private GameObject hook;
     public bool grapInstancier;
     public bool grapAccroche;
+    [System.NonSerialized]
     public bool facingRight;
+    [System.NonSerialized]
+    public bool shotRight;
+
+    [System.NonSerialized]
+    public bool shotLeft;
 
     //Mouvement
     private Vector2 move;
@@ -63,10 +69,10 @@ public class SC_Mouvement : MonoBehaviour
         }
 
         //Orientation Player
-        if(facingRight && transform.localScale.x < 0)
+        if((facingRight || shotRight) && transform.localScale.x < 0 && !shotLeft)
         {
             transform.localScale = new Vector2(- transform.localScale.x, transform.localScale.y);
-        } else if (!facingRight && transform.localScale.x > 0)
+        } else if ( (!facingRight || shotLeft) && transform.localScale.x > 0 && !shotRight)
         {
             transform.localScale = new Vector2(- transform.localScale.x, transform.localScale.y);
         }

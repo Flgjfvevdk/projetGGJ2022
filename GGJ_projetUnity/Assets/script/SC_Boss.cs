@@ -9,6 +9,9 @@ public class SC_Boss : MonoBehaviour
     //Boss
     private Rigidbody2D rb;
     private bool bossFacingRight;
+
+    //pv
+    public SC_Slider sliderBoss;
     public int hpBossMax;
     public int hpBoss;
    
@@ -44,6 +47,8 @@ public class SC_Boss : MonoBehaviour
     private Animator anim;
 
     public GameObject groupNuagePrefab;
+    public float tempsRechargeFoudre;
+    private float cooldownFoudre;
     private GameObject groupNuage;
     public float tempsDeplacementNuage;
     private float tempsAvantFinDeplNuage;
@@ -82,7 +87,10 @@ public class SC_Boss : MonoBehaviour
         anim = GetComponent<Animator>();
         attCacCharge = false;
         hpBoss = hpBossMax;
+        sliderBoss.init(hpBossMax);
+        sliderBoss.setValue(hpBoss);
         chargeBasEnCour = false;
+        cooldownFoudre = 0.0f;
     }
 
     // Update is called once per frame
@@ -147,6 +155,7 @@ public class SC_Boss : MonoBehaviour
             }
         }
 
+        //Precharge de l'attaque Corps à Corps
         if (attCacCharge) 
         { 
             if(timeBfrAttCac <= 0)
@@ -161,24 +170,38 @@ public class SC_Boss : MonoBehaviour
                 timeBfrAttCac -= Time.deltaTime;
             }
         }
+
+
+        //Cooldown des Attaques
+
+        //Cooldown de la foudre
+        if(cooldownFoudre >= 0)
+        {
+            cooldownFoudre -= Time.deltaTime;
+        }
     
     }
 
     void spellFoudre()
     {
-        float xGauche = bordHautGauche.transform.position.x;
-        float xDroit = bordHautDroit.transform.position.x;
-        float yPos = bordHautGauche.transform.position.y - 1.5f;
-        groupNuage = Instantiate(groupNuagePrefab, Vector3.zero, Quaternion.identity);
-        rb.velocity = Vector2.zero;
-        elecSprite.enabled = true;
-        for (int k = 0; k < nbNuage; k++)
+        if(cooldownFoudre <= 0)
         {
-            GameObject nf = Instantiate(nuageFoudre, new Vector2( (k+1) * (xDroit - xGauche) / (nbNuage + 1) + xGauche, yPos), Quaternion.identity);
-            nf.transform.parent = groupNuage.transform;
-            //nf.GetComponent<SC_NuageFoudre>().lauchStorm();
+            float xGauche = bordHautGauche.transform.position.x;
+            float xDroit = bordHautDroit.transform.position.x;
+            float yPos = bordHautGauche.transform.position.y - 1.5f;
+            groupNuage = Instantiate(groupNuagePrefab, Vector3.zero, Quaternion.identity);
+            rb.velocity = Vector2.zero;
+            elecSprite.enabled = true;
+            for (int k = 0; k < nbNuage; k++)
+            {
+                GameObject nf = Instantiate(nuageFoudre, new Vector2((k + 1) * (xDroit - xGauche) / (nbNuage + 1) + xGauche, yPos), Quaternion.identity);
+                nf.transform.parent = groupNuage.transform;
+                //nf.GetComponent<SC_NuageFoudre>().lauchStorm();
+            }
+            tempsAvantFinDeplNuage = tempsDeplacementNuage;
+            cooldownFoudre = tempsRechargeFoudre;
         }
-        tempsAvantFinDeplNuage = tempsDeplacementNuage;
+        
     }
 
 
@@ -193,6 +216,8 @@ public class SC_Boss : MonoBehaviour
             {
                 scriptBoule.partirControlable(rb);
             }
+
+            tirEnCour = true;
         }
     }
 
@@ -240,7 +265,6 @@ public class SC_Boss : MonoBehaviour
         GameObject playerGO = null;
         foreach(Collider2D c in colliders)
         {
-            Debug.Log(c.name);
             if (c.gameObject.CompareTag("Player"))
             {
                 playerGO = c.gameObject;
@@ -329,13 +353,21 @@ public class SC_Boss : MonoBehaviour
     {
         Debug.Log("-1hp Boss ! ");
         hpBoss -= 1;
+        sliderBoss.setValue(hpBoss);
 
-        if(hpBoss <= 0)
+        if (hpBoss <= 0)
         {
             Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            collision.gameObject.GetComponent<SC_Player>().getHitPlayer();
+        }
+    }
 
     // Aide visualisation hitbox
     // void OnDrawGizmos()
@@ -346,4 +378,6 @@ public class SC_Boss : MonoBehaviour
     //     //hitbox cac
     //     UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2));
     // }
+
+
 }

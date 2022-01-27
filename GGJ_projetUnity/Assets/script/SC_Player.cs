@@ -10,6 +10,7 @@ public class SC_Player : MonoBehaviour
 
     //private Rigidbody2D rb; probablement inutile
 
+    public SC_Slider sliderPlayer;
     public int hpPlayerMax;
     public int hpPlayer;
 
@@ -25,6 +26,9 @@ public class SC_Player : MonoBehaviour
     private bool shotRight;
     private bool shotLeft;
     private bool dropBombe;
+
+    private float tempsAvantResetDirection;
+
 
     
     // Créeation des controles 
@@ -48,8 +52,12 @@ public class SC_Player : MonoBehaviour
         tempsAvantProchainTir = 0;
         dropBombe = false;
         hpPlayer = hpPlayerMax;
+        sliderPlayer.init(hpPlayerMax);
+        sliderPlayer.setValue(hpPlayer);
         tempsRestantInvincible = 0.0f;
         spritePl = GetComponent<SpriteRenderer>();
+
+        tempsAvantResetDirection = 0.0f;
     }
 
     // Lance les sorts/Objets quand les boutons associers sont pressés
@@ -65,15 +73,37 @@ public class SC_Player : MonoBehaviour
                 if (shotRight)
                 {
                     scriptBoule.partir(Vector2.right);
-                    GetComponent<SC_Mouvement>().facingRight = true;
+                    //GetComponent<SC_Mouvement>().facingRight = true;
+                    GetComponent<SC_Mouvement>().shotRight = true;
+                    GetComponent<SC_Mouvement>().shotLeft = false;
                 } else
                 {
                     scriptBoule.partir(Vector2.left);
-                    GetComponent<SC_Mouvement>().facingRight = false;
+                    //GetComponent<SC_Mouvement>().facingRight = false;
+                    GetComponent<SC_Mouvement>().shotLeft = true;
+                    GetComponent<SC_Mouvement>().shotRight = false;
                 }
             }
+            tempsAvantResetDirection = tirRate*1.2f; //Delaie avant de se retourner si le player tir dans la direction inverse de laquelle il avance
             tempsAvantProchainTir = tirRate;
-        } else if (dropBombe && tempsAvantProchainTir <= 0) {
+        } else
+        {
+            //On ne tir pas
+
+            //On fait ça pour laisser un petit delaie entre le dernier tir et le fait de se retourner
+            if(tempsAvantResetDirection <= 0)
+            {
+                GetComponent<SC_Mouvement>().shotRight = false;
+                GetComponent<SC_Mouvement>().shotLeft = false;
+            } else
+            {
+                tempsAvantResetDirection -= Time.deltaTime;
+            }
+            
+        }
+
+        
+        if (dropBombe && tempsAvantProchainTir <= 0) {
             GameObject bombe = Instantiate(bombeGO,transform.position, Quaternion.identity);
             tempsAvantProchainTir = tirRate;
         }
@@ -133,6 +163,7 @@ public class SC_Player : MonoBehaviour
             Debug.Log("Outch je suis touché ! ");
             tempsRestantInvincible = tempsInvicibilite;
             hpPlayer -= 1;
+            sliderPlayer.setValue(hpPlayer);
         }
 
         if(hpPlayer <= 0)
@@ -140,4 +171,5 @@ public class SC_Player : MonoBehaviour
             Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
         }
     }
+
 }

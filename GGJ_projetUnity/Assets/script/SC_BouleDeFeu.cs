@@ -9,8 +9,8 @@ public class SC_BouleDeFeu : MonoBehaviour
 
     // BdF controlable
     private bool isControlable;
-    private Vector2 positionSouris;
     private Rigidbody2D bossRb;
+
 
     private Rigidbody2D rb;
     public float speed;
@@ -23,7 +23,6 @@ public class SC_BouleDeFeu : MonoBehaviour
         tempsDeVie = 10.0f;
 
         controls = new GamepadControler();
-        // controls.ClavierSouris.PositionSouris.performed += ctx => positionSouris = ctx.ReadValue<Vector2>();
 
     }
 
@@ -53,7 +52,12 @@ public class SC_BouleDeFeu : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            destroySelf();
+        }
+        if (rb.velocity != Vector2.zero)
+        {
+            Vector2 direct = rb.velocity.normalized;
+            transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direct.y, direct.x) * Mathf.Rad2Deg);
         }
     }
 
@@ -69,15 +73,15 @@ public class SC_BouleDeFeu : MonoBehaviour
     {
         this.bossRb = plRb;
         isControlable = true;
-        transform.localScale = transform.localScale + new Vector3(0.25f, 0.25f, 0.25f); 
+        transform.localScale = transform.localScale * 2.5f; 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(isControlable)
-        {
-            bossRb.gameObject.GetComponent<SC_Boss>().tirEnCour = false;
-        }
+        //if(isControlable)
+        //{
+        //    bossRb.gameObject.GetComponent<SC_Boss>().tirEnCour = false;
+        //}
         
         if (collision.CompareTag("Boss"))
         {
@@ -88,18 +92,18 @@ public class SC_BouleDeFeu : MonoBehaviour
             }
         } else if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
         {
-            Destroy(gameObject);
+            destroySelf();
         } else if (collision.CompareTag("Bombe"))
         {
             //On détruit les bombes si on tire dessus
             collision.gameObject.GetComponent<SC_Bombe>().Exploser();
-            Destroy(gameObject);
+            destroySelf();
         } else if (collision.CompareTag("Player"))
         {
             if(isControlable)
             {
                 collision.gameObject.GetComponent<SC_Player>().getHitPlayer();
-                Destroy(gameObject);
+                destroySelf();
             }
         }
     }
@@ -112,5 +116,14 @@ public class SC_BouleDeFeu : MonoBehaviour
     private void OnDisable()
     {
         controls.ClavierSouris.Disable();
+    }
+
+    private void destroySelf()
+    {
+        if (isControlable)
+        {
+            bossRb.gameObject.GetComponent<SC_Boss>().tirEnCour = false;
+        }
+        Destroy(gameObject);
     }
 }
