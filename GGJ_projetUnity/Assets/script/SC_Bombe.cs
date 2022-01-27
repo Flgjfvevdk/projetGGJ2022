@@ -58,7 +58,7 @@ public class SC_Bombe : MonoBehaviour
         if (bossObj)
         {
             Debug.Log("Bombe sur le boss");
-            bossObj.gameObject.GetComponent<SC_Boss>().getHitBoss();
+            bossObj.gameObject.GetComponent<SC_Boss>().getHitBoss(2);
         }
 
         //Debug.Log("BOUM !!");
