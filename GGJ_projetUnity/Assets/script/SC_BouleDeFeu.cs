@@ -95,7 +95,7 @@ public class SC_BouleDeFeu : MonoBehaviour
         } else if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
         {
             destroySelf();
-        } else if (collision.CompareTag("Bombe"))
+        } else if (collision.CompareTag("Bombe") && isControlable)
         {
             //On détruit les bombes si on tire dessus
             collision.gameObject.GetComponent<SC_Bombe>().Exploser();
