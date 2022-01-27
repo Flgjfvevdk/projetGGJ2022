@@ -14,6 +14,7 @@ public class SC_Mouvement : MonoBehaviour
     //Detection sol
     public float circleRadius;
     public LayerMask whatIsGround;
+    public LayerMask whatIsPlateforme;
 
     //Grappin
     GameObject grap;
@@ -35,13 +36,15 @@ public class SC_Mouvement : MonoBehaviour
     private int nbSaut;
     private float defValueGavity;
 
+    private bool downPressed;
+
     //Blink
     public SC_Slider_Float sliderTP;
     public float tempsRechargementBlink;
     private float timerRechargeBlink;
     public float distanceBlink;
     public Transform bordPjDevant;
-    private Vector2 tpBlickVect;
+    //private Vector2 tpBlickVect;
     
     
     void Awake()
@@ -57,7 +60,11 @@ public class SC_Mouvement : MonoBehaviour
 
         controls.gamecontroler.Blink.performed += ctx => blink();
 
-        controls.gamecontroler.BlinkStick.performed += ctx => tpBlickVect = ctx.ReadValue<Vector2>();
+
+        controls.gamecontroler.Down.performed += ctx => downIsPress(true);
+        controls.gamecontroler.Down.canceled += ctx => downIsPress(false);
+
+        //controls.gamecontroler.BlinkStick.performed += ctx => tpBlickVect = ctx.ReadValue<Vector2>();
 
     }
 
@@ -69,6 +76,8 @@ public class SC_Mouvement : MonoBehaviour
         defValueGavity = rb.gravityScale;
         facingRight = true;
 
+        downPressed = false;
+
         timerRechargeBlink = 0;
         sliderTP.init(tempsRechargementBlink);
         sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
@@ -78,7 +87,7 @@ public class SC_Mouvement : MonoBehaviour
     void Update()
     {
         //Plusieurs saut
-        if(Physics2D.OverlapCircle(piedTransf.position, circleRadius, whatIsGround))
+        if(Physics2D.OverlapCircle(piedTransf.position, circleRadius, whatIsGround) || Physics2D.OverlapCircle(piedTransf.position, circleRadius, whatIsPlateforme) )
         {
             nbSaut = 2;
         } else {
@@ -124,6 +133,30 @@ public class SC_Mouvement : MonoBehaviour
             timerRechargeBlink -= Time.deltaTime;
             sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
         }
+
+        //Passer à travers plateforme
+        if (downPressed || rb.velocity.y > 0)
+        {
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Plateforme"), true);
+        }
+        else
+        {
+            bool agir = true;
+            Collider2D selfCollider = GetComponent<Collider2D>();
+            Collider2D[] hits = Physics2D.OverlapBoxAll(selfCollider.bounds.center, selfCollider.bounds.size, 0);
+            foreach (Collider2D hit in hits)
+            {
+                if (hit.CompareTag("Plateforme"))
+                {
+                    agir = false;
+                }
+            }
+            if (agir)
+            {
+                Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Plateforme"), false);
+            }
+        }
+
     }
 
     private void jump()
@@ -218,6 +251,12 @@ public class SC_Mouvement : MonoBehaviour
         // }
     }
 
+
+    void downIsPress(bool b)
+    {
+        downPressed = b;
+    }
+
     private void OnEnable()
     {
         controls.gamecontroler.Enable();
@@ -227,4 +266,8 @@ public class SC_Mouvement : MonoBehaviour
     {
         controls.gamecontroler.Disable();
     }
+
+
+
+
 }

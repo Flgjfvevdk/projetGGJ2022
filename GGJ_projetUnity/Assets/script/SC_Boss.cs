@@ -190,9 +190,31 @@ public class SC_Boss : MonoBehaviour
         {
             sliderFoudre.GetComponent<SC_Slider_Float>().setValue((tempsRechargeFoudre - cooldownFoudre));
             cooldownFoudre -= Time.deltaTime;
-        } 
+        }
 
-    
+        //Passer à travers plateforme
+        if (rb.velocity.y > 0)
+        {
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Boss"), LayerMask.NameToLayer("Plateforme"), true);
+        }
+        else
+        {
+            bool agir = true;
+            Collider2D selfCollider = GetComponent<Collider2D>();
+            Collider2D[] hits = Physics2D.OverlapBoxAll(selfCollider.bounds.center, selfCollider.bounds.size, 0);
+            foreach (Collider2D hit in hits)
+            {
+                if (hit.CompareTag("Plateforme"))
+                {
+                    agir = false;
+                }
+            }
+            if (agir)
+            {
+                Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Boss"), LayerMask.NameToLayer("Plateforme"), false);
+            }
+        }
+
     }
 
     void spellFoudre()
@@ -338,7 +360,8 @@ public class SC_Boss : MonoBehaviour
         jumpPress = b;
     }
 
-        
+
+
     // Fonction pour le GamepadControler
     private void OnEnable()
     {

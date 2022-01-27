@@ -205,7 +205,7 @@ public class SC_Player : MonoBehaviour
         if(hpPlayer <= 0)
         {
             Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
-            SceneManager.LoadScene("VictoirePlayer");
+            SceneManager.LoadScene("VictoireBoss");
         }
     }
 

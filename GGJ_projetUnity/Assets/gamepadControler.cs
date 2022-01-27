@@ -98,6 +98,15 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""4306bd73-df0d-41df-8853-6245ca8e6ab1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -186,6 +195,28 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""BlinkStick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""583cd16d-15f3-4f86-b23b-a4db725f7ebc"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7146318e-89df-48c6-be5b-cc7933b7dbf8"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -385,6 +416,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         m_gamecontroler_Bombe = m_gamecontroler.FindAction("Bombe", throwIfNotFound: true);
         m_gamecontroler_Blink = m_gamecontroler.FindAction("Blink", throwIfNotFound: true);
         m_gamecontroler_BlinkStick = m_gamecontroler.FindAction("BlinkStick", throwIfNotFound: true);
+        m_gamecontroler_Down = m_gamecontroler.FindAction("Down", throwIfNotFound: true);
         // ClavierSouris
         m_ClavierSouris = asset.FindActionMap("ClavierSouris", throwIfNotFound: true);
         m_ClavierSouris_q = m_ClavierSouris.FindAction("q", throwIfNotFound: true);
@@ -461,6 +493,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
     private readonly InputAction m_gamecontroler_Bombe;
     private readonly InputAction m_gamecontroler_Blink;
     private readonly InputAction m_gamecontroler_BlinkStick;
+    private readonly InputAction m_gamecontroler_Down;
     public struct GamecontrolerActions
     {
         private @GamepadControler m_Wrapper;
@@ -473,6 +506,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         public InputAction @Bombe => m_Wrapper.m_gamecontroler_Bombe;
         public InputAction @Blink => m_Wrapper.m_gamecontroler_Blink;
         public InputAction @BlinkStick => m_Wrapper.m_gamecontroler_BlinkStick;
+        public InputAction @Down => m_Wrapper.m_gamecontroler_Down;
         public InputActionMap Get() { return m_Wrapper.m_gamecontroler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -506,6 +540,9 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @BlinkStick.started -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBlinkStick;
                 @BlinkStick.performed -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBlinkStick;
                 @BlinkStick.canceled -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnBlinkStick;
+                @Down.started -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_GamecontrolerActionsCallbackInterface.OnDown;
             }
             m_Wrapper.m_GamecontrolerActionsCallbackInterface = instance;
             if (instance != null)
@@ -534,6 +571,9 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
                 @BlinkStick.started += instance.OnBlinkStick;
                 @BlinkStick.performed += instance.OnBlinkStick;
                 @BlinkStick.canceled += instance.OnBlinkStick;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
             }
         }
     }
@@ -629,6 +669,7 @@ public partial class @GamepadControler : IInputActionCollection2, IDisposable
         void OnBombe(InputAction.CallbackContext context);
         void OnBlink(InputAction.CallbackContext context);
         void OnBlinkStick(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
     }
     public interface IClavierSourisActions
     {
