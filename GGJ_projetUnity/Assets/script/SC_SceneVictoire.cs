@@ -13,7 +13,7 @@ public class SC_SceneVictoire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tempAnimVictoire = 3f;
+        tempAnimVictoire = 4f;
         if(isMenuRejouer)
         {
             recTrans = GetComponent<RectTransform>();

@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/FinDeJeu.unity
     guid: 61adbbaa3247b114ab15cfe5593b71a1
   - enabled: 1
-    path: Assets/Scenes/VictoirePlayer.unity
+    path: Assets/Scenes/VictoireBoss.unity
     guid: d80bac7133249c344935be452a4125ad
   m_configObjects: {}
