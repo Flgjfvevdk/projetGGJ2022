@@ -10,7 +10,7 @@ public class SC_Player : MonoBehaviour
 
     //private Rigidbody2D rb; probablement inutile
 
-    public SC_Slider sliderPlayer;
+    public GameObject sliderPlayer;
     public int hpPlayerMax;
     public int hpPlayer;
 
@@ -52,8 +52,8 @@ public class SC_Player : MonoBehaviour
         tempsAvantProchainTir = 0;
         dropBombe = false;
         hpPlayer = hpPlayerMax;
-        sliderPlayer.init(hpPlayerMax);
-        sliderPlayer.setValue(hpPlayer);
+        sliderPlayer.GetComponent<SC_Slider>().init(hpPlayerMax);
+        sliderPlayer.GetComponent<SC_Slider>().setValue(hpPlayer);
         tempsRestantInvincible = 0.0f;
         spritePl = GetComponent<SpriteRenderer>();
 
@@ -156,14 +156,14 @@ public class SC_Player : MonoBehaviour
         controls.gamecontroler.Disable();
     }
 
-    public void getHitPlayer()
+    public void getHitPlayer(int value)
     {
         if(tempsRestantInvincible <= 0)
         {
             Debug.Log("Outch je suis touché ! ");
             tempsRestantInvincible = tempsInvicibilite;
-            hpPlayer -= 1;
-            sliderPlayer.setValue(hpPlayer);
+            hpPlayer -= value;
+            sliderPlayer.GetComponent<SC_Slider>().setValue(hpPlayer);
         }
 
         if(hpPlayer <= 0)

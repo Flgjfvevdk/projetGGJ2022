@@ -711,7 +711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bouleGO: {fileID: 6966070912860842248, guid: 00de1058b491b824ea8ca1b146f72fee, type: 3}
   bombeGO: {fileID: 672664121072568654, guid: 127fa8f729374bb4c8dac565b2a159d5, type: 3}
-  sliderPlayer: {fileID: 619269878}
+  sliderPlayer: {fileID: 619269876}
   hpPlayerMax: 5
   hpPlayer: 0
   livrePosition: {fileID: 690304390}
@@ -1114,6 +1114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930c93649b85b634cabb555be17f290b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slider: {fileID: 619269879}
 --- !u!114 &619269879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1437,7 +1438,7 @@ MonoBehaviour:
   jumpVelocity: 15
   maxHeight: 8
   groupNuagePrefab: {fileID: 6710506728322146671, guid: 049e21be8fffc1346a168d5843327851, type: 3}
-  tempsRechargeFoudre: 0
+  tempsRechargeFoudre: 4
   tempsDeplacementNuage: 0.8
   elecSprite: {fileID: 1071756830}
   mainGaucheRougeSprite: {fileID: 823806767}
@@ -2718,6 +2719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930c93649b85b634cabb555be17f290b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slider: {fileID: 1568502972}
 --- !u!114 &1568502972
 MonoBehaviour:
   m_ObjectHideFlags: 0

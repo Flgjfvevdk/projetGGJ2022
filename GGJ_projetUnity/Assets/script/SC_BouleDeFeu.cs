@@ -87,7 +87,7 @@ public class SC_BouleDeFeu : MonoBehaviour
         {
             if(!isControlable)
             {
-                collision.gameObject.GetComponent<SC_Boss>().getHitBoss();
+                collision.gameObject.GetComponent<SC_Boss>().getHitBoss(1);
                 Destroy(gameObject);
             }
         } else if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
@@ -102,7 +102,7 @@ public class SC_BouleDeFeu : MonoBehaviour
         {
             if(isControlable)
             {
-                collision.gameObject.GetComponent<SC_Player>().getHitPlayer();
+                collision.gameObject.GetComponent<SC_Player>().getHitPlayer(1);
                 destroySelf();
             }
         }

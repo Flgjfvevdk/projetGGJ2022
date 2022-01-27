@@ -89,6 +89,7 @@ public class SC_Boss : MonoBehaviour
         hpBoss = hpBossMax;
         sliderBoss.init(hpBossMax);
         sliderBoss.setValue(hpBoss);
+        // Debug.Log(sliderBoss.);
         chargeBasEnCour = false;
         cooldownFoudre = 0.0f;
     }
@@ -275,7 +276,7 @@ public class SC_Boss : MonoBehaviour
         {
             // Debug.Log("J'ai touché le Player");
             //Faire des degats au Player;
-            playerGO.GetComponent<SC_Player>().getHitPlayer();
+            playerGO.GetComponent<SC_Player>().getHitPlayer(1);
         }
     }
 
@@ -349,10 +350,10 @@ public class SC_Boss : MonoBehaviour
     }
 
 
-    public void getHitBoss()
+    public void getHitBoss(int value)
     {
         Debug.Log("-1hp Boss ! ");
-        hpBoss -= 1;
+        hpBoss -= value;
         sliderBoss.setValue(hpBoss);
 
         if (hpBoss <= 0)
@@ -365,7 +366,7 @@ public class SC_Boss : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<SC_Player>().getHitPlayer();
+            collision.gameObject.GetComponent<SC_Player>().getHitPlayer(1);
         }
     }
 

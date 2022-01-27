@@ -33,7 +33,7 @@ public class SC_Foudre : MonoBehaviour
                     SC_Player plScript = col.gameObject.GetComponent<SC_Player>();
                     if (plScript != null)
                     {
-                        plScript.getHitPlayer();
+                        plScript.getHitPlayer(1);
                     } else
                     {
                         Debug.LogWarning("Ya tr�s probablement un probl�me");
