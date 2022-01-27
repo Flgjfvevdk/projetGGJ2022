@@ -10,6 +10,9 @@ public class SC_Player : MonoBehaviour
 
     //private Rigidbody2D rb; probablement inutile
 
+    public int hpPlayerMax;
+    public int hpPlayer;
+
     public Transform livrePosition;
     public float tirRate;
     private float tempsAvantProchainTir;
@@ -44,7 +47,7 @@ public class SC_Player : MonoBehaviour
     {
         tempsAvantProchainTir = 0;
         dropBombe = false;
-
+        hpPlayer = hpPlayerMax;
         tempsRestantInvincible = 0.0f;
         spritePl = GetComponent<SpriteRenderer>();
     }
@@ -123,12 +126,18 @@ public class SC_Player : MonoBehaviour
         controls.gamecontroler.Disable();
     }
 
-    public void getHit()
+    public void getHitPlayer()
     {
         if(tempsRestantInvincible <= 0)
         {
             Debug.Log("Outch je suis touché ! ");
             tempsRestantInvincible = tempsInvicibilite;
+            hpPlayer -= 1;
+        }
+
+        if(hpPlayer <= 0)
+        {
+            Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
         }
     }
 }

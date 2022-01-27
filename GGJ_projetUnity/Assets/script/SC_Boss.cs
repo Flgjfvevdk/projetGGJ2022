@@ -9,6 +9,8 @@ public class SC_Boss : MonoBehaviour
     //Boss
     private Rigidbody2D rb;
     private bool bossFacingRight;
+    public int hpBossMax;
+    public int hpBoss;
    
     //Sort foudre
     public Transform bordHautGauche;
@@ -21,6 +23,9 @@ public class SC_Boss : MonoBehaviour
     public float tirRate;
     private float tempsAvantProchainTir;
     public bool tirEnCour;
+
+    //Sort Charge Bas
+    private bool chargeBasEnCour;
 
     //Sort Cac
     public float hitboxSize;
@@ -76,6 +81,8 @@ public class SC_Boss : MonoBehaviour
         bossFacingRight = false;
         anim = GetComponent<Animator>();
         attCacCharge = false;
+        hpBoss = hpBossMax;
+        chargeBasEnCour = false;
     }
 
     // Update is called once per frame
@@ -172,8 +179,6 @@ public class SC_Boss : MonoBehaviour
             //nf.GetComponent<SC_NuageFoudre>().lauchStorm();
         }
         tempsAvantFinDeplNuage = tempsDeplacementNuage;
-
-
     }
 
 
@@ -203,13 +208,10 @@ public class SC_Boss : MonoBehaviour
             //Dégat / grosse animation
             Debug.Log("Grosse chute");
             anim.SetBool("SmashBas", true);
-        }
-        else
-        {
-            //Pas de dégats / petit anim ?
-            Debug.Log("Petit chute");
+            chargeBasEnCour = true;            
         }
     }
+    
 
     void chargeSpellCac()
     {
@@ -229,10 +231,16 @@ public class SC_Boss : MonoBehaviour
             mainGaucheGO.GetComponent<SC_BossMainGauche>().dash(transform.position - new Vector3(hitboxSize + boutMainGauche.localPosition.x, 0, 0));
         }
         
+        collidersWithPlayer(colliders);
+    }
+
+    //Regarde si le joueur est dans le colliders, si oui le hit sinon rien
+    private void collidersWithPlayer(Collider2D[] colliders)
+    {
         GameObject playerGO = null;
         foreach(Collider2D c in colliders)
         {
-            //Debug.Log(c.name);
+            Debug.Log(c.name);
             if (c.gameObject.CompareTag("Player"))
             {
                 playerGO = c.gameObject;
@@ -241,12 +249,13 @@ public class SC_Boss : MonoBehaviour
 
         if (playerGO)
         {
-            Debug.Log("J'ai touché le Player");
+            // Debug.Log("J'ai touché le Player");
             //Faire des degats au Player;
+            playerGO.GetComponent<SC_Player>().getHitPlayer();
         }
     }
 
-
+    // Orientation du boss en fonction de ses mouvements
     void bossMajDirection()
     {
         if (bossFacingRight)
@@ -287,6 +296,8 @@ public class SC_Boss : MonoBehaviour
         jumpPress = b;
     }
 
+        
+    // Fonction pour le GamepadControler
     private void OnEnable()
     {
         controls.ClavierSouris.Enable();
@@ -297,20 +308,42 @@ public class SC_Boss : MonoBehaviour
         controls.ClavierSouris.Disable();
     }
 
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Surface") || collision.gameObject.CompareTag("Plateforme"))
         {
             anim.SetBool("SmashBas", false);
+
+            if(chargeBasEnCour)
+            {
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(hitboxSize/1.5f, 2.5f) , 0f);
+                collidersWithPlayer(colliders);
+                chargeBasEnCour = false;
+            }
         }
     }
 
 
-
-    void OnDrawGizmos()
+    public void getHitBoss()
     {
-        // Draw a red cricle autour de la bombre
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(-hitboxSize / 2, 0, 0), new Vector3(hitboxSize, 2, 0));
+        Debug.Log("-1hp Boss ! ");
+        hpBoss -= 1;
+
+        if(hpBoss <= 0)
+        {
+            Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
+        }
     }
+
+
+    // Aide visualisation hitbox
+    // void OnDrawGizmos()
+    // {
+    //     UnityEditor.Handles.color = Color.red;
+    //     //hitbox charge bas
+    //     UnityEditor.Handles.DrawWireCube(transform.position, new Vector3(hitboxSize/1.5f, 2.5f, 0));
+    //     //hitbox cac
+    //     UnityEditor.Handles.DrawWireCube(transform.position + new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2));
+    // }
 }

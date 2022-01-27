@@ -81,7 +81,11 @@ public class SC_BouleDeFeu : MonoBehaviour
         
         if (collision.CompareTag("Boss"))
         {
-            //On lui fait des d�g�ts !
+            if(!isControlable)
+            {
+                collision.gameObject.GetComponent<SC_Boss>().getHitBoss();
+                Destroy(gameObject);
+            }
         } else if (collision.CompareTag("Surface") || collision.CompareTag("Plateforme"))
         {
             Destroy(gameObject);
@@ -90,6 +94,13 @@ public class SC_BouleDeFeu : MonoBehaviour
             //On détruit les bombes si on tire dessus
             collision.gameObject.GetComponent<SC_Bombe>().Exploser();
             Destroy(gameObject);
+        } else if (collision.CompareTag("Player"))
+        {
+            if(isControlable)
+            {
+                collision.gameObject.GetComponent<SC_Player>().getHitPlayer();
+                Destroy(gameObject);
+            }
         }
     }
 

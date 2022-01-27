@@ -33,10 +33,10 @@ public class SC_Foudre : MonoBehaviour
                     SC_Player plScript = col.gameObject.GetComponent<SC_Player>();
                     if (plScript != null)
                     {
-                        plScript.getHit();
+                        plScript.getHitPlayer();
                     } else
                     {
-                        Debug.LogWarning("Ya très probablement un problème");
+                        Debug.LogWarning("Ya trï¿½s probablement un problï¿½me");
                     }
                 }
                 
