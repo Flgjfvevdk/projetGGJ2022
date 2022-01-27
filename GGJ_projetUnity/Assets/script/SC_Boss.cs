@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SC_Boss : MonoBehaviour
 {
@@ -359,6 +360,8 @@ public class SC_Boss : MonoBehaviour
         if (hpBoss <= 0)
         {
             Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
+            SceneManager.LoadScene("VictoirePlayer");
+            
         }
     }
 
