@@ -69,7 +69,6 @@ public class SC_Player : MonoBehaviour
         spritePl = GetComponent<SpriteRenderer>();
 
         tempsAvantResetDirection = 0.0f;
-
     }
 
     // Lance les sorts/Objets quand les boutons associers sont pressés
