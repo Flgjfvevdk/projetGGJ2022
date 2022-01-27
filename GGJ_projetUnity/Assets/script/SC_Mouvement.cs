@@ -35,6 +35,13 @@ public class SC_Mouvement : MonoBehaviour
     private int nbSaut;
     private float defValueGavity;
 
+    //Blink
+    public SC_Slider_Float sliderTP;
+    public float tempsRechargementBlink;
+    private float timerRechargeBlink;
+    public float distanceBlink;
+    public Transform bordPjDevant;
+    
     
     void Awake()
     {
@@ -46,6 +53,8 @@ public class SC_Mouvement : MonoBehaviour
         controls.gamecontroler.Jump.performed += ctx => jump();
 
         controls.gamecontroler.Grappin.performed += ctx => grappin();
+
+        controls.gamecontroler.Blink.performed += ctx => blink();
     }
 
 
@@ -55,6 +64,10 @@ public class SC_Mouvement : MonoBehaviour
         grapInstancier = false;
         defValueGavity = rb.gravityScale;
         facingRight = true;
+
+        timerRechargeBlink = 0;
+        sliderTP.init(tempsRechargementBlink);
+        sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
     }
 
 
@@ -100,6 +113,13 @@ public class SC_Mouvement : MonoBehaviour
                 rb.velocity = Vector2.zero;
             }
         }
+
+        //Blink Player
+        if(timerRechargeBlink >= 0)
+        {
+            timerRechargeBlink -= Time.deltaTime;
+            sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
+        }
     }
 
     private void jump()
@@ -130,6 +150,41 @@ public class SC_Mouvement : MonoBehaviour
             grap.GetComponent<SC_Grappin>().SetUpGrappin(transform, facingRight);
         }
     } 
+
+    private void blink()
+    {
+        if (timerRechargeBlink <= 0 && !grapAccroche)
+        {
+            timerRechargeBlink = tempsRechargementBlink;
+            sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
+
+            Vector3 direction;
+            if (facingRight)
+            {
+                direction = Vector2.right;
+            }else
+            {
+                direction = Vector2.left;
+            }
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, distanceBlink);
+            float distMax = distanceBlink;
+            foreach(RaycastHit2D hit in hits)
+            {
+                LayerMask hitlayer = hit.transform.gameObject.layer;
+                if ((hitlayer == LayerMask.NameToLayer("Ground") || hitlayer == LayerMask.NameToLayer("Plateforme")) && hit.collider != null)
+                {
+                    distMax = Mathf.Min(distMax, Mathf.Abs(hit.point.x - bordPjDevant.position.x));
+                }
+            }
+
+            transform.position = transform.position + direction * distMax;
+
+            //Le player devient invincible pdt son temps d'invincibilité
+            gameObject.GetComponent<SC_Player>().resetInvicibility(2); //(le 2 indique que le temps d'invincibilité va être 2 fois plus long que le temps normal
+        }
+        
+    }
 
     private void OnEnable()
     {

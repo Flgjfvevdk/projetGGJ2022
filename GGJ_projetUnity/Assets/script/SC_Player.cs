@@ -171,6 +171,19 @@ public class SC_Player : MonoBehaviour
         controls.gamecontroler.Disable();
     }
 
+
+    //Peut être appeler après un dash
+    public void resetInvicibility()
+    {
+        tempsRestantInvincible = tempsInvicibilite;
+    }
+
+    //idem que au dessus mais surcharge la méthode pour rendre possible un reset avec un temps différent d'invincibilité
+    public void resetInvicibility(float multiplicateur)
+    {
+        tempsRestantInvincible = multiplicateur * tempsInvicibilite;
+    }
+
     public void getHitPlayer(int value)
     {
         if(tempsRestantInvincible <= 0)
