@@ -200,13 +200,14 @@ public class SC_Player : MonoBehaviour
             tempsRestantInvincible = tempsInvicibilite;
             hpPlayer -= value;
             sliderPlayer.GetComponent<SC_Slider>().setValue(hpPlayer);
-        }
+            GetComponent<SC_Mouvement>().timerRechargeBlink = 0;
 
-        if(hpPlayer <= 0)
-        {
-            Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
-            SceneManager.LoadScene("VictoireBoss");
+            if(hpPlayer <= 0)
+            {
+                Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
+                SceneManager.LoadScene("VictoireBoss");
+                SC_SceneVictoire.nbVictoireBoss ++;
+            }
         }
     }
-
 }

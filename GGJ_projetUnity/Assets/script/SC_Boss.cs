@@ -396,10 +396,11 @@ public class SC_Boss : MonoBehaviour
         hpBoss -= value;
         sliderBoss.setValue(hpBoss);
 
-        if (hpBoss <= 0)
+        if ((hpBoss == 0 && value == 1) || (hpBoss == -1 && value==2))
         {
             Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
             SceneManager.LoadScene("VictoirePlayer");
+            SC_SceneVictoire.nbVictoirePlayer ++;
             
         }
     }

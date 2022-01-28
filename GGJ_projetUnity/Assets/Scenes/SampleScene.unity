@@ -870,7 +870,7 @@ MonoBehaviour:
   bouleGO: {fileID: 6966070912860842248, guid: 00de1058b491b824ea8ca1b146f72fee, type: 3}
   bombeGO: {fileID: 672664121072568654, guid: 127fa8f729374bb4c8dac565b2a159d5, type: 3}
   sliderPlayer: {fileID: 619269876}
-  hpPlayerMax: 5
+  hpPlayerMax: 7
   hpPlayer: 0
   livrePosition: {fileID: 690304390}
   tirRate: 0.3
@@ -2073,7 +2073,7 @@ MonoBehaviour:
   BdFGO: {fileID: 6966070912860842248, guid: 00de1058b491b824ea8ca1b146f72fee, type: 3}
   tirRate: 0
   tirEnCour: 0
-  hitboxSize: 10
+  hitboxSize: 8
   speed: 8
   jumpVelocity: 15
   maxHeight: 8
@@ -3737,7 +3737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -143.35, y: -40.899994}
+  m_AnchoredPosition: {x: -143.34998, y: -40.899994}
   m_SizeDelta: {x: 280, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1568502971

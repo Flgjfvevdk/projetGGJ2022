@@ -41,7 +41,8 @@ public class SC_Mouvement : MonoBehaviour
     //Blink
     public SC_Slider_Float sliderTP;
     public float tempsRechargementBlink;
-    private float timerRechargeBlink;
+    [System.NonSerialized]
+    public float timerRechargeBlink;
     public float distanceBlink;
     public Transform bordPjDevant;
     //private Vector2 tpBlickVect;
