@@ -196,7 +196,7 @@ public class SC_Player : MonoBehaviour
     {
         if(tempsRestantInvincible <= 0)
         {
-            Debug.Log("Outch je suis touché ! ");
+            //Debug.Log("Outch je suis touché ! ");
             tempsRestantInvincible = tempsInvicibilite;
             hpPlayer -= value;
             sliderPlayer.GetComponent<SC_Slider>().setValue(hpPlayer);
@@ -204,9 +204,9 @@ public class SC_Player : MonoBehaviour
 
             if(hpPlayer <= 0)
             {
-                Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
+                //Debug.Log("Finito !!! Boss gagne ! GG ! Bravo ! Trop Fort ! ez !");
+                SC_SceneVictoire.nbVictoireBoss++;
                 SceneManager.LoadScene("VictoireBoss");
-                SC_SceneVictoire.nbVictoireBoss ++;
             }
         }
     }

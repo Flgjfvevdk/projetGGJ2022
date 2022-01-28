@@ -65,6 +65,7 @@ public class SC_Boss : MonoBehaviour
     [System.NonSerialized]
     public bool cacDispo;
 
+    private int enregistreNbVictPlayer;
     void Awake()
     {
         controls = new GamepadControler();
@@ -103,6 +104,7 @@ public class SC_Boss : MonoBehaviour
         sliderFoudre.GetComponent<SC_Slider_Float>().init(tempsRechargeFoudre);
         sliderFoudre.GetComponent<SC_Slider_Float>().setValue(tempsRechargeFoudre - cooldownFoudre);
 
+        enregistreNbVictPlayer = SC_SceneVictoire.nbVictoirePlayer;
     }
 
     // Update is called once per frame
@@ -263,10 +265,10 @@ public class SC_Boss : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, -2*jumpVelocity);
 
         float distance = distToSol();
-        if (distance > 6)
+        if (distance > 5)
         {
             //Dégat / grosse animation
-            Debug.Log("Grosse chute");
+            //Debug.Log("Grosse chute");
             anim.SetBool("SmashBas", true);
             chargeBasEnCour = true;            
         }
@@ -295,8 +297,9 @@ public class SC_Boss : MonoBehaviour
             colliders = Physics2D.OverlapBoxAll(transform.position - new Vector3(hitboxSize/2.0f, 0, 0), new Vector2(hitboxSize,2), 0f);
             mainGaucheGO.GetComponent<SC_BossMainGauche>().dash(transform.position - new Vector3(hitboxSize + boutMainGauche.localPosition.x, 0, 0));
         }
-        
-        collidersWithPlayer(colliders);
+
+        //collidersWithPlayer(colliders);
+        StartCoroutine(CacWithDelay(colliders, 0.1f));
     }
 
     //Regarde si le joueur est dans le colliders, si oui le hit sinon rien
@@ -317,6 +320,12 @@ public class SC_Boss : MonoBehaviour
             //Faire des degats au Player;
             playerGO.GetComponent<SC_Player>().getHitPlayer(1);
         }
+    }
+
+    IEnumerator CacWithDelay(Collider2D[] colliders, float value)
+    {
+        yield return new WaitForSeconds(value);
+        collidersWithPlayer(colliders);
     }
 
     // Orientation du boss en fonction de ses mouvements
@@ -374,7 +383,7 @@ public class SC_Boss : MonoBehaviour
     }
 
     
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Surface") || collision.gameObject.CompareTag("Plateforme"))
         {
@@ -392,15 +401,15 @@ public class SC_Boss : MonoBehaviour
 
     public void getHitBoss(int value)
     {
-        Debug.Log("-1hp Boss ! ");
+        //Debug.Log("-1hp Boss ! ");
         hpBoss -= value;
         sliderBoss.setValue(hpBoss);
 
-        if ((hpBoss == 0 && value == 1) || (hpBoss == -1 && value==2))
+        if (hpBoss <=0)
         {
-            Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
+            //Debug.Log("Player gagne ! Mais comment a t'il fait face a un tel monstre !?! C'est un cheater !");
+            SC_SceneVictoire.nbVictoirePlayer = enregistreNbVictPlayer + 1;
             SceneManager.LoadScene("VictoirePlayer");
-            SC_SceneVictoire.nbVictoirePlayer ++;
             
         }
     }

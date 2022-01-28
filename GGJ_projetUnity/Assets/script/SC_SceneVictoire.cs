@@ -57,6 +57,11 @@ public class SC_SceneVictoire : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
+    public void goToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void quitGame()
     {
         Application.Quit();

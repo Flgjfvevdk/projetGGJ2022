@@ -85,6 +85,10 @@ public class SC_Grappin : MonoBehaviour
         if(Mathf.Pow(direction.x,2) < 0.3f || Mathf.Pow(direction.y,2) < 0.3f)
         {
             playerRb.velocity = Vector2.zero;
+            //Les 3 lignes en dessous permettent de faire depop le grappin quand le joueur est collé
+            playerTransform.gameObject.GetComponent<SC_Mouvement>().grapAccroche = false;
+            playerTransform.gameObject.GetComponent<SC_Mouvement>().grapInstancier = false;
+            Destroy(this.gameObject);
         } else {
             playerRb.velocity = - direction.normalized * speed;
         }

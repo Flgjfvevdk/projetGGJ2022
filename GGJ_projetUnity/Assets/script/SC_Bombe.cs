@@ -57,7 +57,7 @@ public class SC_Bombe : MonoBehaviour
         }
         if (bossObj)
         {
-            Debug.Log("Bombe sur le boss");
+            //Debug.Log("Bombe sur le boss");
             bossObj.gameObject.GetComponent<SC_Boss>().getHitBoss(2);
         }
 
@@ -65,10 +65,10 @@ public class SC_Bombe : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    void OnDrawGizmos()
-    {
-        // Draw a red cricle autour de la bombre
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.back, rayonExplosion);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    // Draw a red cricle autour de la bombre
+    //    UnityEditor.Handles.color = Color.red;
+    //    UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.back, rayonExplosion);
+    //}
 }

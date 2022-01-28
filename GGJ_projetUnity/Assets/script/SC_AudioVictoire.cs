@@ -24,8 +24,9 @@ public class SC_AudioVictoire : MonoBehaviour
     {
         for(int i = 0;i<source.Length;i++) {
             source[i].Play();
+            source[i].volume = volume;
         }
         
-        Debug.Log("jouer le son de la fete");
+        //Debug.Log("jouer le son de la fete");
     }
 }
