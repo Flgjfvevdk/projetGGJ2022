@@ -42,6 +42,7 @@ public class SC_Boss : MonoBehaviour
 
 
     public float speed;
+    private float multSpeed;
     public float jumpVelocity;
     private float defValueGavity;
     public float maxHeight;
@@ -105,6 +106,8 @@ public class SC_Boss : MonoBehaviour
         sliderFoudre.GetComponent<SC_Slider_Float>().setValue(tempsRechargeFoudre - cooldownFoudre);
 
         enregistreNbVictPlayer = SC_SceneVictoire.nbVictoirePlayer;
+
+        multSpeed = 1.0f;
     }
 
     // Update is called once per frame
@@ -123,12 +126,12 @@ public class SC_Boss : MonoBehaviour
         //Deplacement boss
         if (qPress)
         {
-            rbTarget.velocity = new Vector2(-speed, rbTarget.velocity.y);
+            rbTarget.velocity = new Vector2(- multSpeed * speed, rbTarget.velocity.y);
             bossFacingRight = false;
             bossMajDirection();
         }
         else if(dPress) {
-            rbTarget.velocity = new Vector2(speed, rbTarget.velocity.y);
+            rbTarget.velocity = new Vector2(multSpeed * speed, rbTarget.velocity.y);
             bossFacingRight = true;
             bossMajDirection();
         }
@@ -171,8 +174,9 @@ public class SC_Boss : MonoBehaviour
 
         //Precharge de l'attaque Corps à Corps
         if (attCacCharge) 
-        { 
-            if(timeBfrAttCac <= 0)
+        {
+            multSpeed = 0.5f;
+            if (timeBfrAttCac <= 0)
             {
                 spellCac();
                 attCacCharge = false;
@@ -182,6 +186,9 @@ public class SC_Boss : MonoBehaviour
                 mainGaucheRougeSprite.color = new Color(1,1,1, Mathf.Min( (2.0f*(delaieAttCac - timeBfrAttCac) / delaieAttCac), 1.0f));
                 timeBfrAttCac -= Time.deltaTime;
             }
+        } else
+        {
+            multSpeed = 1.0f;
         }
 
 
