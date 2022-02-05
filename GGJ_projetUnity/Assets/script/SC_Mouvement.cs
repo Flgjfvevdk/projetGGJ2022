@@ -140,8 +140,9 @@ public class SC_Mouvement : MonoBehaviour
         }
 
         //Passer à travers plateforme
-        if (downPressed || rb.velocity.y > 0)
+        if (downPressed || rb.velocity.y > 0.01f)
         {
+            Debug.Log(rb.velocity.y);
             Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Plateforme"), true);
         }
         else
