@@ -899,6 +899,7 @@ MonoBehaviour:
   grapInstancier: 0
   grapAccroche: 0
   speed: 10
+  multWhenDamaged: 1.5
   jumpVelocity: 18
   sliderTP: {fileID: 467288054}
   tempsRechargementBlink: 6

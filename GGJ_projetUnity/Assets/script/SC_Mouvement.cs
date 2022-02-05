@@ -32,6 +32,8 @@ public class SC_Mouvement : MonoBehaviour
     //Mouvement
     private Vector2 move;
     public float speed;
+    public float multWhenDamaged;
+    private float multSpeed;
     public float jumpVelocity;
     private int nbSaut;
     private float defValueGavity;
@@ -82,6 +84,8 @@ public class SC_Mouvement : MonoBehaviour
         timerRechargeBlink = 0;
         sliderTP.init(tempsRechargementBlink);
         sliderTP.setValue(tempsRechargementBlink - timerRechargeBlink);
+
+        multSpeed = 1.0f;
     }
 
 
@@ -110,7 +114,7 @@ public class SC_Mouvement : MonoBehaviour
             rb.gravityScale = defValueGavity;
             if (move.x != 0)
             {
-                rb.velocity = new Vector2(move.x * speed, rb.velocity.y);
+                rb.velocity = new Vector2(move.x * speed * multSpeed, rb.velocity.y);
                 facingRight = move.x > 0;
             }
             else
@@ -158,6 +162,13 @@ public class SC_Mouvement : MonoBehaviour
             }
         }
 
+        if (multWhenDamaged > 1.0f && GetComponent<SC_Player>().isInvicible())
+        {
+            multSpeed = multWhenDamaged;
+        } else
+        {
+            multSpeed = 1.0f;
+        }
     }
 
     private void jump()

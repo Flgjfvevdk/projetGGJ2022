@@ -36,7 +36,6 @@ public class SC_Player : MonoBehaviour
 
     private float tempsAvantResetDirection;
 
-
     
     // Créeation des controles 
     void Awake()
@@ -210,4 +209,10 @@ public class SC_Player : MonoBehaviour
             }
         }
     }
+
+    public bool isInvicible()
+    {
+        return tempsRestantInvincible > 0;
+    }
+
 }
