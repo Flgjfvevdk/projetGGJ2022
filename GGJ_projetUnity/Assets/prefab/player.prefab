@@ -224,7 +224,7 @@ MonoBehaviour:
   multWhenDamaged: 1.5
   jumpVelocity: 18
   sliderTP: {fileID: 0}
-  tempsRechargementBlink: 6
+  tempsRechargementBlink: 7
   distanceBlink: 4
   bordPjDevant: {fileID: 3104069254138193334}
 --- !u!114 &3104069253454768538
@@ -245,7 +245,7 @@ MonoBehaviour:
   hpPlayerMax: 7
   hpPlayer: 0
   livrePosition: {fileID: 3104069252589355618}
-  tirRate: 0.3
+  tirRate: 0.4
   tempsInvicibilite: 0.5
   sliderBombe: {fileID: 0}
   delaieRechargeBombe: 0.8

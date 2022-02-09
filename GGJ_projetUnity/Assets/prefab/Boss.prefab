@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderBoss: {fileID: 0}
-  hpBossMax: 25
+  hpBossMax: 28
   hpBoss: 0
   bordHautGauche: {fileID: 0}
   bordHautDroit: {fileID: 0}
